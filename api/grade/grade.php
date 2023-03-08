@@ -7,7 +7,7 @@ switch ($request_method) {
 			if(!empty($_GET["id"]))
 			{
 				$id=intval($_GET["id"]);
-				$mhs->getSomeGrade($id);
+				$mhs->getMaxGrade($id);
 			}
 			else
 			{

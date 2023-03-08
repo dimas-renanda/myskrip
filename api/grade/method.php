@@ -61,7 +61,7 @@ class Course
 		 
 	}
 
-public function getMaxGrade($id=0)
+public function getMaxGrade($id=0)//mengambil total grade dari jumlah mark question yang sudah dinilai
 {
 	global $conn;
 	// if($id != 0)

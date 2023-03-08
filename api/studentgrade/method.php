@@ -33,7 +33,7 @@ class Course
 		echo json_encode($response);
 	}
 
-	public function getSomeStudentGrade($id=0)
+	public function getSomeStudentGrade($id=0)//id jadi user
 	{
 		global $conn;
 		// if($id != 0)
@@ -75,7 +75,7 @@ class Course
 		 
 	}
 
-	public function getSomeStudentMarkGrade($id=0)
+	public function getSomeStudentMarkGrade($id=0)//id jadi course with param mark=true on call
 	{
 		global $conn;
 		// if($id != 0)
