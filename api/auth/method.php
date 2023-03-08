@@ -8,8 +8,6 @@ class Course
 		global $conn;
 		// execute the query
 
-
-
 		$data=array();
 		// $result=$mysqli->query($query);
 
