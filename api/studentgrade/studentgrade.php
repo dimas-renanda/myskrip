@@ -1,0 +1,47 @@
+<?php
+require_once "method.php";
+$mhs = new Course();
+$request_method=$_SERVER["REQUEST_METHOD"];
+switch ($request_method) {
+	case 'GET':
+		if(!empty($_GET["id"]) && @$_GET["mark"] == true)//studentid
+		{
+			$id=intval($_GET["id"]);
+			$mhs->getSomeStudentMarkGrade($id);
+		}
+		if(@$_GET["mark"] != true && !empty($_GET["id"]))//courseid
+		{
+				$id=intval($_GET["id"]);
+				$mhs->getSomeStudentGrade($id);
+		}
+			// else
+			// {
+			// 	$mhs->getStudentGrade();
+			// }
+			break;
+	case 'POST':
+			if(!empty($_GET["id"]))
+			{
+				$id=intval($_GET["id"]);
+				$mhs->update_mhs($id);
+			}
+			else
+			{
+				$mhs->insert_mhs();
+			}		
+			break; 
+	case 'DELETE':
+		    $id=intval($_GET["id"]);
+            $mhs->delete_mhs($id);
+            break;
+	default:
+		// Invalid Request Method
+			header("HTTP/1.0 405 Method Not Allowed");
+			break;
+		break;
+}
+
+
+
+
+?>
