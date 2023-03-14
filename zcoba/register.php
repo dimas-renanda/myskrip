@@ -103,40 +103,52 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
           <div class="card-body p-4 p-sm-5">
 
           <div class="text-center pd-5">
-        <img src="assets/img/logo_s.png" height="100" alt="XNET Logo">
+        <img src="assets/img/logo_s.png" height="100" alt="Moodle OBE Logo">
       </div>
       <div  class="text-center">
       <b><span style="font-size: 20px; margin: 10px;">Moodle Tools</span></b>
       </div>
 
             <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-            <form >
+            <form method="post" action="/myskrip/api/auth/regist.php">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
+                <input type="text" class="form-control" name="username" placeholder="name@example.com" required>
+                <label for="floatingInput">Username / Email address</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="text" class="form-control" name="name" placeholder="Teacher" required>
+                <label for="Name">Name</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
                 <label for="floatingPassword">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password"required>
+                <label for="floatingPassword">Confirm Password</label>
               </div>
 
               <div class="d-grid">
-                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign
-                  in</button>
+                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Regist</button>
               </div>
-              <br>
-
+<br>
               <div class="d-grid mb-2">
-                <a class="btn btn-secondary btn-login text-uppercase fw-bold" href="register.php">
+                <a class="btn btn-secondary btn-login text-uppercase fw-bold" href="index.php">
 
                   <!-- <i class="fab fa-google me-2"></i> -->
-                  Register 
+                  Sign In
            
                 </a>
               </div>
 
-              <hr class="my-3">
-              <!--<div class="d-grid">
+              <hr class="my-4">
+
+              <!-- <div class="d-grid mb-2">
+                <button class="btn btn-google btn-login text-uppercase fw-bold" type="submit">
+                  <i class="fab fa-google me-2"></i> Sign in with Google
+                </button>
+              </div>
+              <div class="d-grid">
                 <button class="btn btn-facebook btn-login text-uppercase fw-bold" type="submit">
                   <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook
                 </button>

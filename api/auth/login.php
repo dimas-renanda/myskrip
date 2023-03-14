@@ -1,17 +1,17 @@
 <?php
 require_once "method.php";
-$mhs = new Course();
+$mhs = new Auth();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'POST':
 			if(!empty($_GET["email"])&&!empty($_GET["password"]))
 			{
 				$id=intval($_GET["id"]);
-				$mhs->update_mhs($id);
+				$mhs->signIn($id);
 			}
 			else
 			{
-				$mhs->insert_mhs();
+				$mhs->signIn();
 			}		
 			break; 
 	default:

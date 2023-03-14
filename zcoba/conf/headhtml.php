@@ -8,7 +8,7 @@ require_once "./assets/assets.php"
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>X-RADIUS <?= $hotspotname; ?></title>
+		<title>Moodle OBE Bridge <?= $hotspotname; ?></title>
 		<meta charset="utf-8">
 		<meta http-equiv="cache-control" content="private" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
