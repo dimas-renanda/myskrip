@@ -3,30 +3,13 @@ require_once "../conndb/connect.php";
 class Auth
 {
 
-	public  function signIn($id=0,$pass='')
+	public  function showError($message)
 	{
-		global $conn;
-		// execute the query
-
-		$data=array();
-		// $result=$mysqli->query($query);
-
-
-		$stmt = $conn->query("SELECT 
-		username, password where username = $id and password = $pass ");
-
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
-
-		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-		{
-			$data[]=$row;
-		}
+		global $connapp;
 		$response=array(
 							'status' => 1,
-							'message' =>'Get List AuthSuccessfully.',
-							'data' => $data
+							'message' =>'Something Went Wrong..',
+							'data' => $message
 						);
 		header('Content-Type: application/json');
 		echo json_encode($response);
@@ -35,12 +18,8 @@ class Auth
 	public function RegistOi($username,$name,$password,$confirm_password)
 	{
 		global $connapp;
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
 
-		$saltsecret = trim('M00dle8ridgeTime0be'.date("Y-m-d"));
+		$saltsecret = trim('M00dle8ridgeTime0be'.date("Y-m-dH:i:s"));
 		$param_username = $username;
 		$param_name = $name;
 		$param_salt = password_hash($saltsecret, PASSWORD_DEFAULT);
@@ -49,10 +28,6 @@ class Auth
 		$sql = "INSERT INTO user (username,name,salt,password,created_at) VALUES ('$param_username','$param_name','$param_salt','$param_password','$param_created')"; 
 				try{
 					$stmt = $connapp->prepare($sql);
-					// Bind variables to the prepared statement as parameters
-										// Set parameters
-															//set salt for password
-					// Attempt to execute the prepared statement
 					if($stmt->execute()){
 						// Redirect to login page
 						// echo '<script type="text/javascript">'; 
@@ -87,11 +62,124 @@ class Auth
 				echo $sql;
 			  }
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
+	}
 
-		 
+	public function signIn($username,$password)
+	{
+		global $connapp;
+
+		$sql = "SELECT id, username, password, salt , created_at FROM user WHERE username = :username LIMIT 1";
+
+		try {
+			$stmt = $connapp->prepare($sql);
+	
+			$stmt->execute([
+				'username' => $username,
+			]);
+	
+			if ($stmt->rowCount() == 1) {
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);
+				//echo $result['password'];
+				//echo '<br>';
+				$timeStamp = $result['created_at'];
+				$timeStamp = date( "Y-m-dH:i:s", strtotime($timeStamp));
+				//echo trim($timeStamp);
+				$saltsecret = trim('M00dle8ridgeTime0be'.$timeStamp);
+				//echo $saltsecret;
+				//echo '<br>';
+				//echo $result['salt'];
+				//var_dump(password_verify($saltsecret, $result['salt']));
+				if (password_verify($saltsecret, $result['salt']))
+				{
+					///session_start();
+	
+					// $_SESSION["loggedin"] = true;
+					// $_SESSION["id"] = $result['id'];
+					// $_SESSION["username"] = $result['username'];
+					//echo '<br>';
+					//echo 'Salted OK !';
+	
+					if (password_verify($password, $result['password']))
+					{
+						///session_start();
+		
+						// $_SESSION["loggedin"] = true;
+						// $_SESSION["id"] = $result['id'];
+						// $_SESSION["username"] = $result['username'];
+	
+						// echo '<br>';
+						// echo 'Pass OK Berhasil!!!!';
+						// echo '<br>';
+						$response=array(
+							'status' => 1,
+							'message' =>'Success',
+							'id' => $result['id'],
+							'username' => $result['username'],
+						);
+		// header('Content-Type: application/json');
+		// echo json_encode($response);
+
+		session_start();
+		$_SESSION["loggedin"] = true;
+		$_SESSION["id"] = $result['id'];
+		$_SESSION["username"] = $result['username'];
+		//echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://'.$domainnya.'/xradius/crossradius-admin/dashboard";</script>';
+		echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://localhost/myskrip/zcoba/admin";</script>';
+
+					}
+					else if (!password_verify($password, $result['password']))
+					{
+						// echo '<br>';
+						// echo 'Pass Rejected !';
+						// echo '<br>';
+	
+						$response=array(
+							'status' => 1,
+							'message' =>'Rejected',
+						);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+	
+					}
+					else{
+						// echo '<br>';
+						// echo 'Something went wrong !';
+	
+						$response=array(
+							'status' => 1,
+							'message' =>'Try again later',
+						);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+	
+					}
+				}
+	  
+				else {
+					$password_err = "";
+	
+					//
+					echo '<br>';
+					echo 'Password Yang di Masukkan Salah !';
+				}
+	
+			} else {
+				$username_err = "Akun Tidak Terdaftar !";
+			}
+	
+		   // echo 'sudah  konek';echo '<br>';
+	
+		} catch (PDOException $e) {
+			$response=array(
+				'status' => 1,
+				'message' =>'Oops! Something went wrong. Please Try Again Later',
+			);
+	header('Content-Type: application/json');
+	echo json_encode($response);
+		}
+
+		
+		
 	}
 
 }

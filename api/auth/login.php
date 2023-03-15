@@ -1,17 +1,18 @@
 <?php
 require_once "method.php";
-$mhs = new Auth();
+$login = new Auth();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'POST':
-			if(!empty($_GET["email"])&&!empty($_GET["password"]))
+			if(!empty($_POST["username"])&&!empty($_POST["password"]))
 			{
-				$id=intval($_GET["id"]);
-				$mhs->signIn($id);
+				$id=$_POST["username"];
+				$pass = $_POST["password"];
+				$login->signIn($id,$pass);
 			}
 			else
 			{
-				$mhs->signIn();
+				$login->showError('something went wrong...');
 			}		
 			break; 
 	default:
@@ -20,8 +21,5 @@ switch ($request_method) {
 			break;
 		break;
 }
-
-
-
 
 ?>

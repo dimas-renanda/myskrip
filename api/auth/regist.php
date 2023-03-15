@@ -61,12 +61,30 @@ switch ($request_method) {
 
 			//insert if no error
 
-			if(empty($username_err) && empty($password_err) && empty($name_err)){
+			if(empty($username_err) && empty($password_err) && empty($name_err) && empty($confirm_password_err)){
         
 				// Prepare an insert statement
 				$regist->RegistOi($username,$name,$password,$confirm_password);
 				
 			}    
+			else{
+				if(!empty($username_err))
+				{
+					$regist->showError($username_err);
+				}
+				if(!empty($password_err) )
+				{
+					$regist->showError($password_err);
+				}
+				if(!empty($confirm_password_err) )
+				{
+					$regist->showError($confirm_password_err);
+				}
+				if(!empty($name_err))
+				{
+					$regist->showError($name_err);
+				}
+			}
 
 			break; 
 	default:
