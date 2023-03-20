@@ -47,7 +47,7 @@ if (sidebarToggle) {
 <hr>
 
 
-<button class="btn btn-info pull-right text-white" data-bs-toggle="modal" data-bs-target="#myModalAddNews" ><i class="fa fa-plus"></i> Add News</button>
+<button class="btn btn-info pull-right text-white" data-bs-toggle="modal" data-bs-target="#myModalAddNews" ><i class="fa fa-plus"></i> Add Course</button>
 
 
 <p style="padding-bottom: 30px;"></p>

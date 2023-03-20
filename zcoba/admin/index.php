@@ -56,7 +56,7 @@ if (sidebarToggle) {
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light"><a class="navbar-brand" href="">
   &nbsp;
-      <?php echo '<img class="navbar-brand" src="http://'.$domainnya.'/xradius/crossradius-admin/assets/img/xspin.gif" alt="XNET Logo" height="40">'; ?>Moodle Tools</a></div>
+      <?php echo '<img class="navbar-brand" src="../assets/img/logo_s.png" alt="Logo" height="50">'; ?>Moodle Tools</a></div>
                 <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=course"><i class="fa fa-server"></i> Course List</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=file"><i class="fa fa-newspaper-o"></i> OBE File Input</a>
