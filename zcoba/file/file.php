@@ -59,7 +59,7 @@ if (sidebarToggle) {
 
             <div class="clearfix">
                 <div class="float-left" style="margin-right: 5px;">
-                    <input type="file" name="file" class="form-control">
+                    <input type="file" name="file" class="form-control" required>
                 </div>
                 <br>
                 <button type="submit" name="preview" class="btn btn-primary">PREVIEW</button>
@@ -128,16 +128,113 @@ $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 </table>
 
 
+                <br>
+                <button  name="sync" class="btn pull-right btn-primary" data-bs-toggle="modal" data-bs-target="#myModalSync" > <i class="fa fa-refresh"></i> Sync with moodle</button>
+
+
+<br>
+<?php 
+$highestRow = $spreadsheet->getActiveSheet()->getHighestColumn();//mendapatkan cell tertinggi
+
+var_dump(ord($highestRow) - 64 - 4 ); //mengubah cell tertinggi menjadi int dengan ord dan dikurangi 64 untuk alphabet huruf besar dengan nilai ASCII dari huruf A atau a (yaitu 64 atau 96)
+//dikurangi 4 untuk column yang bukan isi input penilaian sehingga mendapatkan jumlah soal
+echo '<br>';
+echo count($sheet)-2;//dikurangi 2 untuk header dan footer datanya
+echo '<br>';
+var_dump($sheet[2]['B']);
+echo '<br>';
+var_dump($sheet[2]['C']);
+echo '<br>';
+var_dump($sheet[2]['D']);
+echo '<br>';
+var_dump($sheet[2]['E']);
+echo '<br>';
+var_dump($sheet[2]['F']);
+echo '<br>';
+var_dump($sheet[2]['G']);
+$sheet[2]['B'] = 'ubahnrpnya';
+echo '<br>';
+var_dump($sheet[2]['B']);
+echo '<br>';
+echo '<br>';
+
+var_dump($sheet);
+
+
+
+
+
+?>
+
         </div>
     </div>
 </div>
             <?php  
-            
+            unlink('../file/tmp/' . $nama_file_baru); //comment apabila ingin melihat file excelny
+            // Hapus file sementara di folder temp tersebut
 }
             ?>
 
-</div>
+</div> 
 
+<!-- container div end -->
+
+<!-- modall -->
+                <!-- Sync Modal -->
+                <div id="myModalSync" class="modal fade" role="dialog">
+<div class="vertical-alignment-helper">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold"> <i class="fa fa-newspaper-o"> </i> Add News</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body mx-3" method="POST">
+         <form action='uploadmedia.php' method="POST" enctype="multipart/form-data">
+						<table align ="text-center">   
+                     
+                  <tr> <td><i class="fa fa-newspaper-o prefix grey-text"> </i> Title</td>
+						<td> : </td>
+						<td><div class="form-group">
+					 <input type="text" name="title" class="form-control " placeholder="News Title" required>
+						</div></td>
+					</tr>
+
+               <tr> <td><i class="fa fa-file-text prefix grey-text"></i> Description</td>
+						<td> : </td>
+						<td><div class="form-group">
+					 <textarea rows="4" cols="50" name="description" class="form-control " placeholder="Description" required></textarea>
+						</div></td>
+					</tr>
+
+					<tr> <td><i class="fa fa-picture-o prefix grey-text"></i> News Image &nbsp; (Max 2MB)</td>
+						<td> : </td>
+						<td><div class="form-group">
+					 <input type="file" name="filefoto" class="form-control " placeholder="News Image" required>
+						</div></td>
+					</tr>
+
+               <tr> <td><i class="fa fa-link prefix grey-text"></i> News Link</td>
+						<td> : </td>
+						<td><div class="form-group">
+					 <input type="text" name="url" class="form-control " placeholder="URL Link" required>
+						</div></td>
+					</tr>
+
+					<tr> <td></td>
+                        <td></td><td> <button  type="submit" class="btn btn-warning btn-block text-white" value="OK"><i class="fa fa-plus-square"></i> Add</button></td>
+							<td></td>
+                        </tr>
+                        
+                        </table>
+                        
+                    </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--  -->
 </body>
 </html>
 
