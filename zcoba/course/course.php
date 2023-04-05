@@ -95,35 +95,48 @@ $no=1;
           echo '<td>'.$data['id'].'</td>';
           echo '<td>'.$data['fullname'].'</td>';
           echo '<td>'.$data['shortname'].'</td>';
-          echo '<td >      <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-edit"></i></button>
+          echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-edit"></i></button>
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button></td>';
 
 
           
         echo'</tr>';
 
-echo '      <!-- Edit News -->
+echo '      <!-- List Evaluation -->
 <div id="myModal'.$data['id'].'" class="modal fade" role="dialog">
 <div class="vertical-alignment-helper">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header text-center">
-            <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Edit News</h4>
+            <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Evaluation</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body mx-3" method="POST">
             <form class="form-signin" action ="editnews.php" method="POST" enctype="multipart/form-data">
                <div class="md-form mb-4">
-                  <i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Title </label>
+                  <i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Course Full Name </label>
                   <input type="hidden" name="id" class="form-control validate"  value='.$data['id'].' >
-                  <input type="text"  name="title" class="form-control validate" value="'.$data['shortname'].'" required>
+                  <input type="text"  name="title" class="form-control validate" value="'.$data['fullname'].'" readonly>
                </div>
+
                <div class="md-form mb-4">
-                  <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Description </label>
-                  <textarea rows="4" cols="50"  name="description"class="form-control validate"  required>'.$data['fullname'].'</textarea>
-               </div>
+               <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Course Short Name </label>
+               <input type="text"  name="title" class="form-control validate" value="'.$data['shortname'].'" readonly>
+            </div>
+
+               <div class="md-form mb-4">
+               <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Assesment </label>
+               <select class="form-select" aria-label="Default select example">
+               <option selected>Open this select menu</option>
+               <option value="1">One</option>
+               <option value="2">Two</option>
+               <option value="3">Three</option>
+             </select>
+            </div>
+
+
                <div class="modal-footer d-flex justify-content-center">
-                  <button id="redit" class="btn btn-default btn-dark btn-block text-uppercase"><i class="fa fa-edit prefix grey-text">  </i> Edit</button>
+                  <button id="redit" class="btn btn-default btn-dark btn-block text-uppercase"><i class="fa fa-edit prefix grey-text">  </i> Get Assesment</button>
                </div>
             </form>
               </div>
@@ -172,7 +185,7 @@ echo '      <!-- Delete News -->
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header text-center">
-            <h4 class="modal-title w-100 font-weight-bold"> <i class="fa fa-newspaper-o"> </i> Add News</h4>
+            <h4 class="modal-title w-100 font-weight-bold"> <i class="fa fa-newspaper-o"> </i> Add Course</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body mx-3" method="POST">
@@ -182,7 +195,7 @@ echo '      <!-- Delete News -->
                   <tr> <td><i class="fa fa-newspaper-o prefix grey-text"> </i> Title</td>
 						<td> : </td>
 						<td><div class="form-group">
-					 <input type="text" name="title" class="form-control " placeholder="News Title" required>
+					 <input type="text" name="title" class="form-control " placeholder="Course Name" required>
 						</div></td>
 					</tr>
 
