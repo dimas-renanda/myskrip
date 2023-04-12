@@ -120,7 +120,7 @@ class Course
 		 
 	}
 
-	public function getSomeStudentMarkGradeEval($id=0,$eval='')//id jadi course with param mark=true on call
+	public function getSomeStudentMarkGradeEval($id=0,$eval=0)//id jadi course with param mark=true on call
 	{
 		global $conn;
 		// if($id != 0)
@@ -144,7 +144,7 @@ class Course
  JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
  JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
  JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
- WHERE q.course = $id AND q.name = '$eval' AND qa.state = 'finished' and qasd.name = '-mark'
+ WHERE q.course = $id AND q.id = '$eval' AND qa.state = 'finished' and qasd.name = '-mark'
  GROUP BY qa.id, qas.id, qasd.id
  ORDER BY u.username, q.name, qas.slot");
 

@@ -7,7 +7,7 @@ switch ($request_method) {
 		if(!empty($_GET["id"]) && !empty($_GET["eval"]) )//courseid
 		{
 			$id=intval($_GET["id"]);
-			$eval = $_GET["eval"];
+			$eval = intval($_GET["eval"]);
 			$mhs->getSomeStudentMarkGradeEval($id,$eval);
 		}
 		if(!empty($_GET["id"]) && @$_GET["mark"] == 'true')//courseid
