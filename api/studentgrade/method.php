@@ -120,6 +120,51 @@ class Course
 		 
 	}
 
+	public function getSomeStudentMarkGradeEval($id=0,$eval='')//id jadi course with param mark=true on call
+	{
+		global $conn;
+		// if($id != 0)
+		// {
+		// 	$query.=" WHERE id=".$id." LIMIT 1";
+		// }
+		$data=array();
+		$stmt = $conn->query("SELECT u.id AS userid, u.username, u.firstname, u.lastname, 
+		q.name AS quizname, 
+		qas.questionid AS questionid, 
+		qas.slot AS originalquestionid, 
+		qas.questionid AS questionname, 
+		qas.minfraction AS minfraction, 
+		qas.maxfraction AS maxfraction, 
+		SUM(CAST(qas_steps.fraction AS DECIMAL(10,2)) * CAST(qas_steps.state AS DECIMAL(10,2))) AS grade,
+		qasd.name AS answername, 
+		qasd.value AS answervalue
+ FROM mdl_quiz_attempts qa 
+ JOIN mdl_user u ON qa.userid = u.id 
+ JOIN mdl_quiz q ON qa.quiz = q.id 
+ JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
+ JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
+ JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
+ WHERE q.course = $id AND q.name = '$eval' AND qa.state = 'finished' and qasd.name = '-mark'
+ GROUP BY qa.id, qas.id, qasd.id
+ ORDER BY u.username, q.name, qas.slot");
+
+		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
+		// 	print $data['shortname'] . '<br>';
+		// }
+		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$data[]=$row;
+		}
+		$response=array(
+							'status' => 1,
+							'message' =>'Get List Some Student Mark Grade Eval Successfully.',
+							'data' => $data
+						);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		 
+	}
+
 
 
 }

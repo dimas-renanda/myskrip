@@ -4,11 +4,11 @@ $mhs = new Course();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'GET':
-			if(!empty($_GET["id"]) && !empty($_GET["evname"]))
+			if(!empty($_GET["id"]))
 			{
 				$id=intval($_GET["id"]);
-				$evname = $_GET["evname"];
-				$mhs->getSomeEval($id,$evname);
+				//$evname = $_GET["evname"];
+				$mhs->getSomeEval($id);
 			}
 			else
 			{

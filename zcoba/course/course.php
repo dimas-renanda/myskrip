@@ -47,7 +47,7 @@ if (sidebarToggle) {
 <hr>
 
 
-<button class="btn btn-info pull-right text-white" data-bs-toggle="modal" data-bs-target="#myModalAddNews" ><i class="fa fa-plus"></i> Add Course</button>
+<!-- <button class="btn btn-info pull-right text-white" data-bs-toggle="modal" data-bs-target="#myModalAddNews" ><i class="fa fa-plus"></i> Add Course</button> -->
 
 
 <p style="padding-bottom: 30px;"></p>
@@ -65,7 +65,7 @@ $ch = curl_init();
 
     //$emailnya ="damson";
     //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
-    $url  = "http://localhost/myskrip/api/course/course.php";
+    $url  = "http://localhost/myskrip/api/course/course.php?id=".$_SESSION['username'];
 
 
     $homepage = file_get_contents($url);
@@ -77,10 +77,11 @@ echo '<table id ="example" class="table table-bordered table-striped text-center
 <tr>
 <th scope="col">No</th>';
  // <th scope="col">Id</th>
-  echo' <th scope="col">ID</th>
-  <th scope="col">Fullname</th>
-  <th scope="col">Shortname</th>
-  <th scope="col">Action</th>
+  //echo' <th scope="col">Course ID</th>';
+  echo'
+  <th scope="col">Course </th>
+  <th scope="col">Course Name</th>
+<th scope="col">Action</th>
 </tr>
 </thead>
 <tbody>';
@@ -92,11 +93,12 @@ $no=1;
           echo '<th scope="row">'.$no.'</th>';
           $no++;
          //  echo '<th scope="row">'.$data['id'].'</th>';
-          echo '<td>'.$data['id'].'</td>';
+         // echo '<td>'.$data['id'].'</td>';
           echo '<td>'.$data['fullname'].'</td>';
           echo '<td>'.$data['shortname'].'</td>';
-          echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-edit"></i></button>
-          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button></td>';
+          echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
+          //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
+          echo '</td>';
 
 
           
@@ -112,7 +114,7 @@ echo '      <!-- List Evaluation -->
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body mx-3" method="POST">
-            <form class="form-signin" action ="editnews.php" method="POST" enctype="multipart/form-data">
+            <form class="form-signin" action ="../evaluation/index.php" method="POST" enctype="multipart/form-data">
                <div class="md-form mb-4">
                   <i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Course Full Name </label>
                   <input type="hidden" name="id" class="form-control validate"  value='.$data['id'].' >
@@ -121,20 +123,38 @@ echo '      <!-- List Evaluation -->
 
                <div class="md-form mb-4">
                <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Course Short Name </label>
-               <input type="text"  name="title" class="form-control validate" value="'.$data['shortname'].'" readonly>
-            </div>
+               <input type="text"  name="name" class="form-control validate" value="'.$data['shortname'].'" readonly>
+            </div>';
 
+echo '
                <div class="md-form mb-4">
                <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Assesment </label>
-               <select class="form-select" aria-label="Default select example">
-               <option selected>Open this select menu</option>
-               <option value="1">One</option>
-               <option value="2">Two</option>
-               <option value="3">Three</option>
+               <select name="eval" class="form-select" aria-label="Default select example">
+               <option selected>-</option>';
+
+               $ch = curl_init();
+
+    //$emailnya ="damson";
+    //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
+    $evalurl  = "http://localhost/myskrip/api/evaluation/evaluation.php?id=".$data['id'];
+
+
+    $dataeval = file_get_contents($evalurl);
+    //var_dump($homepage);
+    $jsonArrayEvalResponse = json_decode($dataeval,true);
+foreach ($jsonArrayEvalResponse['data'] as $dataev) {
+   echo '<option value="'.$dataev['Quiz ID'].'">'.$dataev['Quiz Name'].'</option>';
+}
+// echo'               
+               
+//                <option value="1">One</option>
+//                <option value="2">Two</option>
+//                <option value="3">Three</option>';
+ echo'              
              </select>
-            </div>
+            </div>';
 
-
+echo '
                <div class="modal-footer d-flex justify-content-center">
                   <button id="redit" class="btn btn-default btn-dark btn-block text-uppercase"><i class="fa fa-edit prefix grey-text">  </i> Get Assesment</button>
                </div>

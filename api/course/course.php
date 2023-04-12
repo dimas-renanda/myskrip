@@ -6,7 +6,7 @@ switch ($request_method) {
 	case 'GET':
 			if(!empty($_GET["id"]))
 			{
-				$id=intval($_GET["id"]);
+				$id=$_GET["id"];
 				$mhs->getSomeCourse($id);
 			}
 			else

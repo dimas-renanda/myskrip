@@ -54,7 +54,7 @@ if (sidebarToggle) {
         <div class="d-flex" id="wrapper">
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light"><a class="navbar-brand" href="">
+                <div class="sidebar-heading border-bottom bg-light mb-1"><a class="navbar-brand" href="">
   &nbsp;
       <?php echo ''; ?>Moodle Tools</a></div>
       <center>
@@ -64,17 +64,17 @@ if (sidebarToggle) {
                 
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=course"><i class="fa fa-server"></i> Course List</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=file"><i class="fa fa-newspaper-o"></i> OBE File Input</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=cs"><i class="fa fa-comments-o" aria-hidden="true"></i> Student</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=tickets"><i class="fa fa-user-times" aria-hidden="true"></i> Evaluation</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=packages"><i class="fa fa-tachometer" aria-hidden="true"></i> Grade</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=student"><i class="fa fa-comments-o" aria-hidden="true"></i> Student</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=eval"><i class="fa fa-user-times" aria-hidden="true"></i> Evaluation</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=grade"><i class="fa fa-tachometer" aria-hidden="true"></i> Grade</a>
 
                 </div>
             </div>
             <!-- Page content wrapper-->
             <div id="page-content-wrapper">
                 <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom  ">
-                    <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                    <div class="container-fluid mb-0">
                     
                         <button class="btn  bg-transparent " id="sidebarToggle"><i class="fa fa-bars"></i></button>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -110,17 +110,17 @@ if (sidebarToggle) {
                                 {
                                     require_once '../file/file.php';
                                 }
-                                elseif($content=='tickets')
+                                elseif($content=='eval')
                                 {
-                                    require_once '../ticket/index.php';
+                                    require_once '../evaluation/index.php';
                                 }
-                                elseif($content=='packages')
+                                elseif($content=='student')
                                 {
-                                    require_once '../package/index.php';
+                                    require_once '../student/index.php';
                                 }
-                                elseif($content=='disabled_package')
+                                elseif($content=='grade')
                                 {
-                                    require_once '../package/disabledpackage.php';
+                                    require_once '../grade/index.php';
                                 }
                                 else{
 

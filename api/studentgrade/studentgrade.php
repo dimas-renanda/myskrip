@@ -4,12 +4,18 @@ $mhs = new Course();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'GET':
-		if(!empty($_GET["id"]) && @$_GET["mark"] == true)//courseid
+		if(!empty($_GET["id"]) && !empty($_GET["eval"]) )//courseid
+		{
+			$id=intval($_GET["id"]);
+			$eval = $_GET["eval"];
+			$mhs->getSomeStudentMarkGradeEval($id,$eval);
+		}
+		if(!empty($_GET["id"]) && @$_GET["mark"] == 'true')//courseid
 		{
 			$id=intval($_GET["id"]);
 			$mhs->getSomeStudentMarkGrade($id);
 		}
-		if(@$_GET["mark"] != true && !empty($_GET["id"]))//studentid
+		if(@$_GET["mark"] != true && !empty($_GET["id"]) && empty($_GET["eval"]))//studentid
 		{
 				$id=intval($_GET["id"]);
 				$mhs->getSomeStudentGrade($id);

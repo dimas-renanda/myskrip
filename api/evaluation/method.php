@@ -43,7 +43,7 @@ class Course
 		echo json_encode($response);
 	}
 
-	public function getSomeEval($id=0,$evalname='assignment')
+	public function getSomeEval($id=0)
 	{
 		global $conn;
 		// if($id != 0)
@@ -63,7 +63,7 @@ class Course
 	INNER JOIN 
 		mdl_course c ON cm.course = c.id
 	WHERE 
-		m.name = '$evalname' AND c.id = $id");
+		m.name = 'quiz'  AND c.id = $id");
 
 		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
 		// 	print $data['shortname'] . '<br>';
