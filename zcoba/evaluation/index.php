@@ -49,7 +49,7 @@ sidebarToggle.addEventListener('click', event => {
 <body>
 
 <div class="col-md" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;">
-<h3>Evaluation</h3>
+<h3>Quiz Evaluation</h3>
 <hr>
 
 
@@ -62,22 +62,35 @@ echo 'Course ID: ',$_POST['id'];
 echo '<br>';
 echo 'Course: ',$_POST['name'];
 echo '<br>';
-echo 'Evaluation: ',$_POST['eval'];
+echo 'Evaluation (Quiz ID) : ',$_POST['eval'];
 echo '<br>';
 
 
 
 $ch = curl_init();
+$url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
+//echo $url;
+$homepage = file_get_contents($url);
+//var_dump($homepage);
+$jsonArrayResponse = json_decode($homepage,true);
 
-    //$emailnya ="damson";
-    //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
-    $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
-    echo $url;
+$chqnumber = curl_init();
+$urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
+//echo $urlchq;
+$homepagechq = file_get_contents($urlchq);
+//var_dump($homepagechq);
+$jsonArrayResponsechq = json_decode($homepagechq,true);
+//var_dump($jsonArrayResponsechq);
+$result = current(array_filter($jsonArrayResponsechq['data'], function($e) {
+    return $e['total_questions'] ;
+}));
+
+//print_r($result);
+extract($result);
+//var_dump($qnumber);
+echo 'Number of quiz question : ',$total_questions;
 
 
-    $homepage = file_get_contents($url);
-    //var_dump($homepage);
-    $jsonArrayResponse = json_decode($homepage,true);
 
 echo '<table id ="example" class="table table-bordered table-striped text-center">
 <thead>
@@ -88,33 +101,120 @@ echo '<table id ="example" class="table table-bordered table-striped text-center
   echo'
   <th scope="col">Nrp </th>
   <th scope="col">Nama</th>';
-//   for ($x = 0; $x <= 5; $x++) {
-//     echo '<th scope="col">No ',$x,'</th>';
-//   }
+  for ($x = 1; $x <= $total_questions; $x++) {
+    echo '<th scope="col">No ',$x,'</th>';
+  }
+
+//   echo'
+//   <th scope="col">Nilai</th>';
+
   echo'
-  <th scope="col">Nilai</th>
 </tr>
 </thead>
 <tbody>';
+
+// $json = json_decode($json, true);
+
+// $result = current(array_filter($jsonArrayResponse['data'], function($e) {
+//     return $e['username'] == 'c1419023201';
+// }));
+
+// print_r($result);
+
+$templatedata = array();
+
+
 $no=1;
+
+
+
+foreach ($jsonArrayResponse['data'] as $data) {
+    
+
+    
+    if(isset($temp) ? !($temp == $data['username'])  : true){
+       //echo $data['firstname'];
+
+      //  echo '<th scope="row">'.$data['id'].'</th>';
+      // echo '<td>'.$data['id'].'</td>';
+      echo'<tr>';
+      echo '<th scope="row">'.$no.'</th>';
+       echo '<td>'.$data['username'].'</td>';
+
+      
+
+       echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
+       echo '<td>'.intval($data['answervalue']*10).'</td>';
+       $no++;
+       $templatedata[]=$data['username'];
+
+    }
+
+    elseif(isset($temp) ?($temp == $data['username'])  : true){
+
+
+     
+        
+        //echo $data['firstname'];
+ 
+       //  echo '<th scope="row">'.$data['id'].'</th>';
+       // echo '<td>'.$data['id'].'</td>';
+       
+    //    echo '<th scope="row"></th>';
+    //    echo '<td> </td>';
+    //    echo '<td> </td>';
+
+        echo '<td>'.intval($data['answervalue']*10).'</td>';
+
+       
+        
+        $templatedata[]=$data['answervalue'];
+ 
+     }
+
+
+
+
+
+        
+        //echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
+        //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
+ 
+ 
+        
+      
+    $temp = $data['username'];
+}
+echo '</tr>';
+
+// $value = array_keys($result);
+// var_dump($value);
+
+
               foreach ($jsonArrayResponse['data'] as $data) {
 
 
-          echo '<tr>';
-          echo '<th scope="row">'.$no.'</th>';
-          $no++;
-         //  echo '<th scope="row">'.$data['id'].'</th>';
-         // echo '<td>'.$data['id'].'</td>';
-          echo '<td>'.$data['username'].'</td>';
-          echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
-          echo '<td>'.$data['answervalue'].'</td>';
-          //echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
-          //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
-          echo '</td>';
+              // start isi table
+
+        //   echo '<tr>';
+        //   echo '<th scope="row">'.$no.'</th>';
+        //   $no++;
+        //  //  echo '<th scope="row">'.$data['id'].'</th>';
+        //  // echo '<td>'.$data['id'].'</td>';
+        //  if ($data['username'])
+        //   echo '<td>'.$data['username'].'</td>';
+
+        //   echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
+        //   echo '<td>'.$data['answervalue'].'</td>';
+        //   //echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
+        //   //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
+        //   echo '</td>';
 
 
           
-        echo'</tr>';
+        // echo'</tr>';
+
+        //batas isi table
 
 // echo '      <!-- List Evaluation -->
 // <div id="myModal'.$data['id'].'" class="modal fade" role="dialog">
@@ -207,7 +307,21 @@ $no=1;
 
 ?>
 
-    
+<form method="post" action="" enctype="multipart/form-data">
+            <a href="Format.xlsx">Download Format</a> &nbsp;|&nbsp;
+            <a href="index.php">Reset</a>
+            <br><br>
+
+            <div class="clearfix">
+                <div class="float-left" style="margin-right: 5px;">
+                    <input type="file" name="file" class="form-control" required>
+                </div>
+                <br>
+                <button type="submit" name="preview" class="btn btn-success float-end"><i class="fa fa-download"></i> Download Excel</button>
+            </div>
+
+        </form>
+        
 </div>
 
 </body>
