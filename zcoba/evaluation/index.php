@@ -3,6 +3,7 @@ require_once "../conf/safety.php";
 require_once "../conf/bjorka.php";
 require_once "../conf/conn.php";
 require_once "../assets/assets.php";
+require '../file/vendor/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +59,26 @@ sidebarToggle.addEventListener('click', event => {
 <!-- <p style="padding-bottom: 30px;"></p> -->
 
 <?php 
+
+// Import the core class of PhpSpreadsheet
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+// Import the Xlsx writer class
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+// Create a new Spreadsheet object
+$spreadsheet = new Spreadsheet();
+$downloadsheet = new Spreadsheet();
+// Retrieve the current active worksheet
+$sheet = $spreadsheet->getActiveSheet();
+
+// Set cell A1 with the "#" string value
+$sheet->setCellValue('A1', '#');
+$sheet->setCellValue('B1', 'Nrp');
+$sheet->setCellValue('C1', 'Nama');
+
+$cell  = 'D';
+
 echo 'Course ID: ',$_POST['id'];
 echo '<br>';
 echo 'Course: ',$_POST['name'];
@@ -121,7 +142,7 @@ echo '<table id ="example" class="table table-bordered table-striped text-center
 
 // print_r($result);
 
-$templatedata = array();
+//$templatedata = array();
 
 
 $no=1;
@@ -130,9 +151,15 @@ $no=1;
 
 foreach ($jsonArrayResponse['data'] as $data) {
     
+$temparr = array();
 
+// $temparr['nrp']=$data['username'];
+// $temparr['name']=$data['firstname'].' '.$data['lastname'];
+// $temparr['nomor']=$data['answervalue']*10;
     
     if(isset($temp) ? !($temp == $data['username'])  : true){
+        //$templatedata[]=',';
+
        //echo $data['firstname'];
 
       //  echo '<th scope="row">'.$data['id'].'</th>';
@@ -141,19 +168,43 @@ foreach ($jsonArrayResponse['data'] as $data) {
       echo '<th scope="row">'.$no.'</th>';
        echo '<td>'.$data['username'].'</td>';
 
-      
-
        echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
        echo '<td>'.intval($data['answervalue']*10).'</td>';
-       $no++;
-       $templatedata[]=$data['username'];
+       
+      // $sheet->setCellValue('A'.$no, $no-1);
+       //$templatedata[]=$data['username'];
+       //$sheet->setCellValue('B'.$no, $data['username']);
+       //$templatedata[]=$data['firstname'].' '.$data['lastname'];
+       //$sheet->setCellValue('C'.$no, $data['firstname'].' '.$data['lastname']);
+       //$templatedata[]=$data['answervalue']*10;
+       //$sheet->setCellValue($cell.$no, $data['answervalue']*10);
+
+       $temparr['no']=$no;
+       $temparr['nrp']=$data['username'];
+       $temparr['name']=$data['firstname'].' '.$data['lastname'];
+
+       //$temparr['nomor']=$data['answervalue']*10;
+       $nilaiq= explode(",", $data['answervalue']*10);
+
+       
+
+
+       foreach ($nilaiq as $dnilai) {
+        array_push($temparr, $dnilai);
+    }
+
+    $no++;
+
+
+
+
+       
 
     }
 
     elseif(isset($temp) ?($temp == $data['username'])  : true){
-
-
-     
+        
+        $cell++;
         
         //echo $data['firstname'];
  
@@ -167,10 +218,26 @@ foreach ($jsonArrayResponse['data'] as $data) {
         echo '<td>'.intval($data['answervalue']*10).'</td>';
 
        
-        
-        $templatedata[]=$data['answervalue'];
+        //$templatedata[]=$data['answervalue'];
+        //$sheet->setCellValue($cell.$no, $data['answervalue']*10);
+
+       // $temparr['nomor']=$data['answervalue']*10;
+
+       $nilaiq= explode(",", $data['answervalue']*10);
+
+       
+
+
+       foreach ($nilaiq as $dnilai) {
+        array_push($temparr, $dnilai);
+    }
+
+
+
+
  
      }
+     
 
 
 
@@ -184,11 +251,55 @@ foreach ($jsonArrayResponse['data'] as $data) {
         
       
     $temp = $data['username'];
+    $templatedata[] = $temparr;
+}
+
+var_dump($templatedata);
+
+foreach ($templatedata as $data) {
+
+        echo @$data['nrp'],' ',@$data['name'],' ',@$data['nomor'],' ';
+    
 }
 echo '</tr>';
 
 // $value = array_keys($result);
 // var_dump($value);
+
+
+$hasilnilai = 0;
+$cellnya = 'A';
+$downloadsheet->getActiveSheet()->setCellValue('A1', '#');
+$downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
+$downloadsheet->getActiveSheet()->setCellValue('C1', 'Nama');
+$downloadsheet->getActiveSheet()->fromArray($templatedata, NULL, 'A2');
+// for($i=0;$i<count($templatedata);$i++)
+// {
+
+// if ($templatedata[$i] == ',')
+// {
+//     $i++;
+// }
+
+   
+//  elseif ($templatedata[$i] != ',')
+//  {
+//       $sheet->setCellValue('A'.$i, $i-1);
+//       $sheet->setCellValue('B'.$i, $templatedata[$i-1]);
+//       $sheet->setCellValue('C'.$i, $templatedata[$i+1]);
+
+//       echo $templatedata[$i],'  ';
+//  }
+
+//  //$cellnya = 'A';
+
+
+//      //print_r($templatedata);
+     
+
+
+
+// }
 
 
               foreach ($jsonArrayResponse['data'] as $data) {
@@ -303,6 +414,15 @@ echo '</tr>';
       }
       echo       '</tbody>
 </table>';
+
+
+// Write a new .xlsx file
+$writer = new Xlsx($downloadsheet);
+
+// Save the new .xlsx file
+$writer->save('create-xlsx-files.xls');
+
+
 
 
 ?>
