@@ -17,7 +17,19 @@ require '../file/vendor/autoload.php';
   
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
-<title>News</title>
+<title>Evaluation </title>
+
+<style>
+
+.cross {
+  color: red;
+}
+
+.check {
+  color: #00ff00;
+}
+
+</style>
 
 <script>
     $(document).ready(function () {
@@ -109,9 +121,12 @@ $result = current(array_filter($jsonArrayResponsechq['data'], function($e) {
 //print_r($result);
 extract($result);
 //var_dump($qnumber);
-echo 'Number of quiz question : ',$total_questions;
+echo '<p class="md-5">Number of quiz question : ',$total_questions,'</p>';
 
-
+echo '<li><b>Course Available</b>  <span class="cross">&#10006</span></li>
+<li><b>Assesment Available</b>  <span class="cross">&#10006</span></li>
+<li><b>Number of Question</b>  <span class="check">&#10004</span></li>
+<li><b>Grade requirement</b>  <span class="check">&#10004</span></li>','<br>';
 
 echo '<table id ="example" class="table table-bordered table-striped text-center">
 <thead>
