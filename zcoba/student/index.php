@@ -1,7 +1,5 @@
 <?php 
 require_once "../conf/safety.php";
-require_once "../conf/bjorka.php";
-require_once "../conf/conn.php";
 require_once "../assets/assets.php";
 
 ?>
@@ -17,7 +15,7 @@ require_once "../assets/assets.php";
   
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
-<title>News</title>
+<title>Student List</title>
 
 <script>
     $(document).ready(function () {

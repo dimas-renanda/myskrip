@@ -1,10 +1,8 @@
 <?php 
-
 require_once "../conf/safety.php";
-require_once "../conf/bjorka.php";
 require_once "../assets/assets.php";
 require_once '../conf/adminsidebar/assets.php' ;
-require_once "../conf/conn.php";
+
 
 ?>
 <!DOCTYPE html>

@@ -1,7 +1,5 @@
 <?php 
 require_once "../conf/safety.php";
-require_once "../conf/bjorka.php";
-require_once "../conf/conn.php";
 require_once "../assets/assets.php";
 require '../file/vendor/autoload.php';
 ?>
