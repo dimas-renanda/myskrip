@@ -1,6 +1,6 @@
 <?php
 require_once "method.php";
-$mhs = new Course();
+$sgrade = new StudentGrade();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'GET':
@@ -8,37 +8,34 @@ switch ($request_method) {
 		{
 			$id=intval($_GET["id"]);
 			$eval = intval($_GET["eval"]);
-			$mhs->getSomeStudentMarkGradeEval($id,$eval);
+			$sgrade->getSomeStudentMarkGradeEval($id,$eval);
 		}
 		if(!empty($_GET["id"]) && @$_GET["mark"] == 'true')//courseid
 		{
 			$id=intval($_GET["id"]);
-			$mhs->getSomeStudentMarkGrade($id);
+			$sgrade->getSomeStudentMarkGrade($id);
 		}
 		if(@$_GET["mark"] != true && !empty($_GET["id"]) && empty($_GET["eval"]))//studentid
 		{
 				$id=intval($_GET["id"]);
-				$mhs->getSomeStudentGrade($id);
+				$sgrade->getSomeStudentGrade($id);
 		}
-			// else
-			// {
-			// 	$mhs->getStudentGrade();
-			// }
+
 			break;
 	case 'POST':
 			if(!empty($_GET["id"]))
 			{
 				$id=intval($_GET["id"]);
-				$mhs->update_mhs($id);
+				$sgrade->update_sgrade($id);
 			}
 			else
 			{
-				$mhs->insert_mhs();
+				$sgrade->insert_sgrade();
 			}		
 			break; 
 	case 'DELETE':
 		    $id=intval($_GET["id"]);
-            $mhs->delete_mhs($id);
+            $sgrade->delete_sgrade($id);
             break;
 	default:
 		// Invalid Request Method

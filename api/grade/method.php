@@ -1,24 +1,14 @@
 <?php
 require_once "../conndb/connect.php";
-class Course 
+class Grade
 {
 
 	public  function getGrade()
 	{
 		global $conn;
-		// execute the query
-
-
 
 		$data=array();
-		// $result=$mysqli->query($query);
-
-
 		$stmt = $conn->query("SELECT * from mdl_course");
-
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
@@ -37,16 +27,10 @@ class Course
 	{
 		global $conn;
 		$query="SELECT * FROM mdl_course";
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
+
 		$data=array();
 		$stmt = $conn->query("SELECT * from mdl_course where id = $id");
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
 			$data[]=$row;
@@ -64,10 +48,7 @@ class Course
 public function getMaxGrade($id=0)//mengambil total grade dari jumlah mark question yang sudah dinilai
 {
 	global $conn;
-	// if($id != 0)
-	// {
-	// 	$query.=" WHERE id=".$id." LIMIT 1";
-	// }
+
 	$data=array();
 	$stmt = $conn->query("	SELECT u.id AS userid, u.username, u.firstname, u.lastname, 
 	q.name AS quizname, 
@@ -85,9 +66,6 @@ JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid
 WHERE q.course = $id AND qa.state = 'finished' 
 ORDER BY u.username, q.name, qas.slot");
 
-	// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-	// 	print $data['shortname'] . '<br>';
-	// }
 	while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 	{
 		$data[]=$row;
@@ -101,8 +79,6 @@ ORDER BY u.username, q.name, qas.slot");
 	echo json_encode($response);
 	 
 }
-
-
 
 }
 

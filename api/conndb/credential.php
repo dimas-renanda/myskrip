@@ -1,5 +1,11 @@
 <?php 
 
+$servername = "kostsoda.onthewifi.com";
+$port = "3307";
+$username = "drs";
+$password = "semangatgaspul";
+$dbname = "moodle"
+
 //Akses ke dbnya ni boss senggol dong
 
 // $servername = "192.168.1.253";
@@ -8,11 +14,5 @@
 // $dbname = "psc";
 
 // echo $servername;
-
-$servername = "kostsoda.onthewifi.com";
-$port = "3307";
-$username = "drs";
-$password = "semangatgaspul";
-$dbname = "moodle"
 
 ?>

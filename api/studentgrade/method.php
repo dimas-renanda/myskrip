@@ -1,29 +1,14 @@
 <?php
 require_once "../conndb/connect.php";
-class Course 
+class StudentGrade 
 {
 
 	public  function getStudentGrade()
 	{
 		global $conn;
-		// execute the query
-
-
 
 		$data=array();
-		// $result=$mysqli->query($query);
 
-
-		//$stmt = $conn->query("SELECT * from mdl_course");
-
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
-
-		// while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-		// {
-		// 	$data[]=$row;
-		// }
 		$response=array(
 							'status' => 1,
 							'message' =>'Please input ID or operation !',
@@ -36,10 +21,6 @@ class Course
 	public function getSomeStudentGrade($id=0)//id jadi user
 	{
 		global $conn;
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
 		$data=array();
 		$stmt = $conn->query("SELECT 
 		c.fullname AS 'Course Name',
@@ -58,9 +39,6 @@ class Course
 	INNER JOIN 
 		mdl_quiz_attempts qa ON q.id = qa.quiz AND qa.userid = u.id");
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
 			$data[]=$row;
@@ -78,10 +56,7 @@ class Course
 	public function getSomeStudentMarkGrade($id=0)//id jadi course with param mark=true on call
 	{
 		global $conn;
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
+
 		$data=array();
 		$stmt = $conn->query("SELECT u.id AS userid, u.username, u.firstname, u.lastname, 
 		q.name AS quizname, 
@@ -103,9 +78,6 @@ class Course
  GROUP BY qa.id, qas.id, qasd.id
  ORDER BY u.username, q.name, qas.slot");
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
 			$data[]=$row;
@@ -123,10 +95,7 @@ class Course
 	public function getSomeStudentMarkGradeEval($id=0,$eval=0)//id jadi course with param mark=true on call
 	{
 		global $conn;
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
+
 		$data=array();
 		$stmt = $conn->query("SELECT u.id AS userid, u.username, u.firstname, u.lastname, 
 		q.name AS quizname, 
@@ -148,9 +117,6 @@ class Course
  GROUP BY qa.id, qas.id, qasd.id
  ORDER BY u.username, q.name, qas.slot");
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
 			$data[]=$row;

@@ -1,18 +1,13 @@
 <?php
 require_once "../conndb/connect.php";
-class Course 
+class Evaluation 
 {
 
 	public  function getEval()
 	{
 		global $conn;
-		// execute the query
-
-
 
 		$data=array();
-		// $result=$mysqli->query($query);
-
 
 		$stmt = $conn->query("SELECT 
 		q.id AS 'Quiz ID',
@@ -25,10 +20,6 @@ class Course
 		mdl_modules m ON cm.module = m.id
 	INNER JOIN 
 		mdl_course c ON cm.course = c.id");
-
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
@@ -46,10 +37,6 @@ class Course
 	public function getSomeEval($id=0)
 	{
 		global $conn;
-		// if($id != 0)
-		// {
-		// 	$query.=" WHERE id=".$id." LIMIT 1";
-		// }
 		$data=array();
 		$stmt = $conn->query("SELECT 
 		q.id AS 'Quiz ID',
@@ -65,9 +52,6 @@ class Course
 	WHERE 
 		m.name = 'quiz'  AND c.id = $id");
 
-		// while($data = $stmt->fetch(PDO::FETCH_ASSOC)){
-		// 	print $data['shortname'] . '<br>';
-		// }
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
 			$data[]=$row;

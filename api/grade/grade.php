@@ -1,6 +1,6 @@
 <?php
 require_once "method.php";
-$mhs = new Course();
+$mhs = new Grade();
 $request_method=$_SERVER["REQUEST_METHOD"];
 switch ($request_method) {
 	case 'GET':

@@ -29,11 +29,6 @@ class Auth
 				try{
 					$stmt = $connapp->prepare($sql);
 					if($stmt->execute()){
-						// Redirect to login page
-						// echo '<script type="text/javascript">'; 
-						// echo 'alert("Akun Berhasil dibuat!");'; 
-						// echo 'window.location.href = "mail_register.php";';
-						// echo '</script>';
 						while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 						{
 							$data[]=$row;
@@ -53,9 +48,6 @@ class Auth
 		header('Content-Type: application/json');
 		echo json_encode($response);
 					}
-		
-					// Close statement
-					// mysqli_stmt_close($stmt);
 				
 			}catch(PDOException $e) {
 				echo "Error: " . $e->getMessage();
@@ -79,72 +71,42 @@ class Auth
 	
 			if ($stmt->rowCount() == 1) {
 				$result = $stmt->fetch(PDO::FETCH_ASSOC);
-				//echo $result['password'];
-				//echo '<br>';
 				$timeStamp = $result['created_at'];
 				$timeStamp = date( "Y-m-dH:i:s", strtotime($timeStamp));
-				//echo trim($timeStamp);
 				$saltsecret = trim('M00dle8ridgeTime0be'.$timeStamp);
-				//echo $saltsecret;
-				//echo '<br>';
-				//echo $result['salt'];
-				//var_dump(password_verify($saltsecret, $result['salt']));
 				if (password_verify($saltsecret, $result['salt']))
 				{
-					///session_start();
-	
-					// $_SESSION["loggedin"] = true;
-					// $_SESSION["id"] = $result['id'];
-					// $_SESSION["username"] = $result['username'];
-					//echo '<br>';
-					//echo 'Salted OK !';
 	
 					if (password_verify($password, $result['password']))
 					{
-						///session_start();
-		
-						// $_SESSION["loggedin"] = true;
-						// $_SESSION["id"] = $result['id'];
-						// $_SESSION["username"] = $result['username'];
-	
-						// echo '<br>';
-						// echo 'Pass OK Berhasil!!!!';
-						// echo '<br>';
 						$response=array(
 							'status' => 1,
 							'message' =>'Success',
 							'id' => $result['id'],
 							'username' => $result['username'],
 						);
-		// header('Content-Type: application/json');
-		// echo json_encode($response);
 
-		session_start();
-		$_SESSION["loggedin"] = true;
-		$_SESSION["id"] = $result['id'];
-		$_SESSION["username"] = $result['username'];
-		//echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://'.$domainnya.'/xradius/crossradius-admin/dashboard";</script>';
-		echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://localhost/myskrip/zcoba/admin";</script>';
+						session_start();
+						$_SESSION["loggedin"] = true;
+						$_SESSION["id"] = $result['id'];
+						$_SESSION["username"] = $result['username'];
+						//echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://'.$domainnya.'/xradius/crossradius-admin/dashboard";</script>';
+						echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://localhost/myskrip/zcoba/admin";</script>';
 
 					}
 					else if (!password_verify($password, $result['password']))
 					{
-						// echo '<br>';
-						// echo 'Pass Rejected !';
-						// echo '<br>';
+
 	
 						$response=array(
 							'status' => 1,
 							'message' =>'Rejected',
 						);
-		header('Content-Type: application/json');
-		echo json_encode($response);
+						header('Content-Type: application/json');
+						echo json_encode($response);
 	
 					}
 					else{
-						// echo '<br>';
-						// echo 'Something went wrong !';
-	
 						$response=array(
 							'status' => 1,
 							'message' =>'Try again later',
@@ -157,8 +119,6 @@ class Auth
 	  
 				else {
 					$password_err = "";
-	
-					//
 					echo '<br>';
 					echo 'Password Yang di Masukkan Salah !';
 				}
@@ -167,15 +127,13 @@ class Auth
 				$username_err = "Akun Tidak Terdaftar !";
 			}
 	
-		   // echo 'sudah  konek';echo '<br>';
-	
 		} catch (PDOException $e) {
 			$response=array(
 				'status' => 1,
 				'message' =>'Oops! Something went wrong. Please Try Again Later',
 			);
-	header('Content-Type: application/json');
-	echo json_encode($response);
+			header('Content-Type: application/json');
+			echo json_encode($response);
 		}
 
 		
