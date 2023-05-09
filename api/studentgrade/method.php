@@ -67,14 +67,15 @@ class StudentGrade
 		qas.maxfraction AS maxfraction, 
 		SUM(CAST(qas_steps.fraction AS DECIMAL(10,2)) * CAST(qas_steps.state AS DECIMAL(10,2))) AS grade,
 		qasd.name AS answername, 
-		qasd.value AS answervalue
+		qasd.value AS answervalue,
+		FROM_UNIXTIME(qa.timefinish) AS quizsubmitdate
  FROM mdl_quiz_attempts qa 
  JOIN mdl_user u ON qa.userid = u.id 
  JOIN mdl_quiz q ON qa.quiz = q.id 
  JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
  JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
  JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
- WHERE q.course = $id AND qa.state = 'finished' and qasd.name = '-mark'
+ WHERE q.course = $id AND qa.state = 'finished' and qasd.name = '-mark' AND qa.timefinish IS NOT NULL
  GROUP BY qa.id, qas.id, qasd.id
  ORDER BY u.username, q.name, qas.slot");
 
@@ -106,14 +107,15 @@ class StudentGrade
 		qas.maxfraction AS maxfraction, 
 		SUM(CAST(qas_steps.fraction AS DECIMAL(10,2)) * CAST(qas_steps.state AS DECIMAL(10,2))) AS grade,
 		qasd.name AS answername, 
-		qasd.value AS answervalue
+		qasd.value AS answervalue,
+		FROM_UNIXTIME(qa.timefinish) AS quizsubmitdate
  FROM mdl_quiz_attempts qa 
  JOIN mdl_user u ON qa.userid = u.id 
  JOIN mdl_quiz q ON qa.quiz = q.id 
  JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
  JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
  JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
- WHERE q.course = $id AND q.id = '$eval' AND qa.state = 'finished' and qasd.name = '-mark'
+ WHERE q.course = $id AND q.id = '$eval' AND qa.state = 'finished' and qasd.name = '-mark' AND qa.timefinish IS NOT NULL
  GROUP BY qa.id, qas.id, qasd.id
  ORDER BY u.username, q.name, qas.slot");
 

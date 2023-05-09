@@ -137,7 +137,7 @@ if (!empty($_POST['id'])) {
     //echo' <th scope="col">Course ID</th>';
     echo'
   <th scope="col">Nrp </th>
-  <th scope="col">Nama</th>';
+  <th scope="col">Nama</th> <th scope="col">Submited at</th>';
     for ($x = 1; $x <= $total_questions; $x++) {
         echo '<th scope="col">No ',$x,'</th>';
     }
@@ -185,6 +185,7 @@ if (!empty($_POST['id'])) {
             echo '<td>'.$data['username'].'</td>';
 
             echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
+            echo '<td>'.$data['quizsubmitdate'].'</td>';
             echo '<td>'.intval($data['answervalue']*10).'</td>';
 
             // $sheet->setCellValue('A'.$no, $no-1);
