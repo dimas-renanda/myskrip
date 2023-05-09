@@ -20,6 +20,7 @@ require_once '../conf/adminsidebar/assets.php' ;
         <?php echo '<link href="http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/conf/adminsidebar/css/styles.css" rel="stylesheet">'; ?>
 <!-- pacee loading -->
         <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-flash.css">
 <script>
   $(document).ready(function () {
