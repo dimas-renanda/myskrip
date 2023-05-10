@@ -10,6 +10,8 @@ class Evaluation
 		$data=array();
 
 		$stmt = $conn->query("SELECT 
+		c.id,
+		c.shortname,
 		q.id AS 'Quiz ID',
 		q.name AS 'Quiz Name'
 	FROM 
@@ -19,7 +21,9 @@ class Evaluation
 	INNER JOIN 
 		mdl_modules m ON cm.module = m.id
 	INNER JOIN 
-		mdl_course c ON cm.course = c.id");
+		mdl_course c ON cm.course = c.id
+	WHERE 
+		m.name = 'quiz'");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{

@@ -63,9 +63,6 @@ sidebarToggle.addEventListener('click', event => {
 <h3>Quiz Evaluation</h3>
 <hr>
 
-
-
-
 <!-- <p style="padding-bottom: 30px;"></p> -->
 
 <?php 
@@ -85,7 +82,15 @@ $sheet = $spreadsheet->getActiveSheet();
 
 // Set cell A1 with the "#" string value
 
+
+
 if (!empty($_POST['id'])) {
+
+  if(!empty($_GET['save']))
+{
+  echo 'Berhasil Masuk Save !' ;
+}
+
     $sheet->setCellValue('A1', '#');
     $sheet->setCellValue('B1', 'Nrp');
     $sheet->setCellValue('C1', 'Nama');
@@ -98,8 +103,6 @@ if (!empty($_POST['id'])) {
     echo '<br>';
     echo 'Evaluation (Quiz ID) : ',$_POST['eval'];
     echo '<br>';
-
-
 
     $ch = curl_init();
     $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
@@ -133,8 +136,6 @@ if (!empty($_POST['id'])) {
 <thead>
 <tr>
 <th scope="col">No</th>';
-    // <th scope="col">Id</th>
-    //echo' <th scope="col">Course ID</th>';
     echo'
   <th scope="col">Nrp </th>
   <th scope="col">Nama</th> <th scope="col">Submited at</th>';
@@ -142,27 +143,12 @@ if (!empty($_POST['id'])) {
         echo '<th scope="col">No ',$x,'</th>';
     }
 
-    //   echo'
-    //   <th scope="col">Nilai</th>';
-
     echo'
 </tr>
 </thead>
 <tbody>';
 
-    // $json = json_decode($json, true);
-
-    // $result = current(array_filter($jsonArrayResponse['data'], function($e) {
-    //     return $e['username'] == 'c1419023201';
-    // }));
-
-    // print_r($result);
-
-    //$templatedata = array();
-
-
     $no=1;
-
 
 
     foreach ($jsonArrayResponse['data'] as $data) {
@@ -221,22 +207,10 @@ if (!empty($_POST['id'])) {
 
             $cell++;
 
-            //echo $data['firstname'];
-
-            //  echo '<th scope="row">'.$data['id'].'</th>';
-            // echo '<td>'.$data['id'].'</td>';
-
-            //    echo '<th scope="row"></th>';
-            //    echo '<td> </td>';
-            //    echo '<td> </td>';
 
             echo '<td>'.intval($data['answervalue']*10).'</td>';
 
 
-            //$templatedata[]=$data['answervalue'];
-            //$sheet->setCellValue($cell.$no, $data['answervalue']*10);
-
-            // $temparr['nomor']=$data['answervalue']*10;
 
             $nilaiq= explode(",", $data['answervalue']*10);
 
@@ -253,23 +227,12 @@ if (!empty($_POST['id'])) {
 
         }
 
-
-
-
-
-
-
-        //echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
-        //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
-
-
-
-
         $temp = $data['username'];
         $templatedata[] = $temparr;
     }
 
     var_dump($templatedata);
+    //var_dump($temparr);
 
     foreach ($templatedata as $data) {
 
@@ -278,132 +241,15 @@ if (!empty($_POST['id'])) {
     }
     echo '</tr>';
 
-    // $value = array_keys($result);
-    // var_dump($value);
-
-
     $hasilnilai = 0;
     $cellnya = 'A';
     $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
     $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
     $downloadsheet->getActiveSheet()->setCellValue('C1', 'Nama');
     $downloadsheet->getActiveSheet()->fromArray($templatedata, null, 'A2');
-    // for($i=0;$i<count($templatedata);$i++)
-    // {
-
-    // if ($templatedata[$i] == ',')
-    // {
-    //     $i++;
-    // }
-
-
-    //  elseif ($templatedata[$i] != ',')
-    //  {
-    //       $sheet->setCellValue('A'.$i, $i-1);
-    //       $sheet->setCellValue('B'.$i, $templatedata[$i-1]);
-    //       $sheet->setCellValue('C'.$i, $templatedata[$i+1]);
-
-    //       echo $templatedata[$i],'  ';
-    //  }
-
-    //  //$cellnya = 'A';
-
-
-    //      //print_r($templatedata);
 
 
 
-
-    // }
-
-
-    foreach ($jsonArrayResponse['data'] as $data) {
-
-
-        // start isi table
-
-        //   echo '<tr>';
-        //   echo '<th scope="row">'.$no.'</th>';
-        //   $no++;
-        //  //  echo '<th scope="row">'.$data['id'].'</th>';
-        //  // echo '<td>'.$data['id'].'</td>';
-        //  if ($data['username'])
-        //   echo '<td>'.$data['username'].'</td>';
-
-        //   echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
-        //   echo '<td>'.$data['answervalue'].'</td>';
-        //   //echo '<td >      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal'.$data['id'].'"><i class="fa fa-eye"></i></button>';
-        //   //<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModaldelete'.$data['id'].'"><i class="fa fa-trash"></i></button>
-        //   echo '</td>';
-
-
-
-        // echo'</tr>';
-
-        //batas isi table
-
-        // echo '      <!-- List Evaluation -->
-        // <div id="myModal'.$data['id'].'" class="modal fade" role="dialog">
-        // <div class="vertical-alignment-helper">
-        //    <div class="modal-dialog" role="document">
-        //       <div class="modal-content">
-        //          <div class="modal-header text-center">
-        //             <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Evaluation</h4>
-        //             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        //          </div>
-        //          <div class="modal-body mx-3" method="POST">
-        //             <form class="form-signin" action ="../evaluation/index.php" method="POST" enctype="multipart/form-data">
-        //                <div class="md-form mb-4">
-        //                   <i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Course Full Name </label>
-        //                   <input type="hidden" name="id" class="form-control validate"  value='.$data['id'].' >
-        //                   <input type="text"  name="title" class="form-control validate" value="'.$data['fullname'].'" readonly>
-        //                </div>
-
-        //                <div class="md-form mb-4">
-        //                <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Course Short Name </label>
-        //                <input type="text"  name="name" class="form-control validate" value="'.$data['shortname'].'" readonly>
-        //             </div>';
-
-        // echo '
-        //                <div class="md-form mb-4">
-        //                <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Assesment </label>
-        //                <select name="eval" class="form-select" aria-label="Default select example">
-        //                <option selected>-</option>';
-
-        // $ch = curl_init();
-
-        //     $evalurl  = "http://localhost/myskrip/api/evaluation/evaluation.php?id=".$data['id'];
-
-
-        //     $dataeval = file_get_contents($evalurl);
-        //     $jsonArrayEvalResponse = json_decode($dataeval,true);
-        // foreach ($jsonArrayEvalResponse['data'] as $dataev) {
-        //    echo '<option value="'.$dataev['Quiz Name'].'">'.$dataev['Quiz Name'].'</option>';
-        // }
-        // echo'
-
-        //                <option value="1">One</option>
-        //                <option value="2">Two</option>
-        //                <option value="3">Three</option>';
-        //  echo'
-        //              </select>
-        //             </div>';
-
-        // echo '
-        //                <div class="modal-footer d-flex justify-content-center">
-        //                   <button id="redit" class="btn btn-default btn-dark btn-block text-uppercase"><i class="fa fa-edit prefix grey-text">  </i> Get Assesment</button>
-        //                </div>
-        //             </form>
-        //               </div>
-        //           </div>
-        //       </div>
-        //   </div>
-        // </div>';
-
-
-
-
-    }
     echo       '</tbody>
 </table>';
 
@@ -413,6 +259,29 @@ if (!empty($_POST['id'])) {
 
     // Save the new .xlsx file
     $writer->save('create-xlsx-files.xls');
+
+    
+    echo '<div class = "py-3" >
+
+    <form class="form-signin" action ="method.php?context=save" method="POST" enctype="multipart/form-data">
+
+               <div class="md-form mb-4">
+                  <input type="hidden" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
+                  <input type="hidden" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
+               </div>
+        <br>
+        <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+    </div>
+
+</form>
+
+    <button type="submit" name="preview" class="btn btn-primary "><i class="fa fa-save"></i> Save </button>
+
+    </div>';
+
+    
+    
+    
 
 }
 
@@ -454,6 +323,7 @@ elseif (empty($_POST['id']))
       })</script>";
     echo 'Evaluation List';
 }
+
     
 // echo '      <!-- Alert -->
 // <div id="myModalAlert" class="modal fade" role="dialog">
@@ -481,22 +351,6 @@ elseif (empty($_POST['id']))
 // </div>';
 
 ?>
-
-
-<form method="post" action="" enctype="multipart/form-data">
-            <a href="Format.xlsx">Download Format</a> &nbsp;|&nbsp;
-            <a href="index.php">Reset</a>
-            <br><br>
-
-            <div class="clearfix">
-                <div class="float-left" style="margin-right: 5px;">
-                    <input type="file" name="file" class="form-control" required>
-                </div>
-                <br>
-                <button type="submit" name="preview" class="btn btn-success float-end"><i class="fa fa-download"></i> Download Excel</button>
-            </div>
-
-        </form>
         
 </div>
 

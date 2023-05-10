@@ -1,9 +1,9 @@
 <?php
 require_once "../conndb/connect.php";
-class StudentGrade 
+class Student 
 {
 
-	public  function getStudentGrade()
+	public  function getStudent()
 	{
 		global $conn;
 
@@ -18,7 +18,7 @@ class StudentGrade
 		echo json_encode($response);
 	}
 
-	public function getSomeStudentGrade($id=0)//id jadi user
+	public function getSomeStudent($id=0)//id jadi user
 	{
 		global $conn;
 		$data=array();
@@ -65,27 +65,19 @@ class StudentGrade
 		qas.questionid AS questionname, 
 		qas.minfraction AS minfraction, 
 		qas.maxfraction AS maxfraction, 
-		CAST(MAX(qasd.value) AS DECIMAL(10,2)) AS max_mark,
+		SUM(CAST(qas_steps.fraction AS DECIMAL(10,2)) * CAST(qas_steps.state AS DECIMAL(10,2))) AS grade,
+		qasd.name AS answername, 
+		qasd.value AS answervalue,
 		FROM_UNIXTIME(qa.timefinish) AS quizsubmitdate
-	FROM mdl_quiz_attempts qa 
-	JOIN mdl_user u ON qa.userid = u.id 
-	JOIN mdl_quiz q ON qa.quiz = q.id 
-	JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
-	JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
-	JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
-	WHERE q.course = $id 
-		AND qa.state = 'finished' 
-		AND qasd.name = '-mark' 
-		AND qa.timefinish IS NOT NULL
-		AND qas.questionid = (
-			SELECT qas2.questionid 
-			FROM mdl_question_attempts qas2
-			WHERE qas2.id = qas.id
-			GROUP BY qas2.questionid, qa.userid
-			HAVING COUNT(DISTINCT qa.id) = 1
-		)
-	GROUP BY qa.id, qas.id
-	ORDER BY u.username, q.name, qas.slot");
+ FROM mdl_quiz_attempts qa 
+ JOIN mdl_user u ON qa.userid = u.id 
+ JOIN mdl_quiz q ON qa.quiz = q.id 
+ JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
+ JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
+ JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
+ WHERE q.course = $id AND qa.state = 'finished' and qasd.name = '-mark' AND qa.timefinish IS NOT NULL
+ GROUP BY qa.id, qas.id, qasd.id
+ ORDER BY u.username, q.name, qas.slot");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
@@ -113,28 +105,19 @@ class StudentGrade
 		qas.questionid AS questionname, 
 		qas.minfraction AS minfraction, 
 		qas.maxfraction AS maxfraction, 
-		CAST(MAX(qasd.value) AS DECIMAL(10,2)) AS answervalue,
+		SUM(CAST(qas_steps.fraction AS DECIMAL(10,2)) * CAST(qas_steps.state AS DECIMAL(10,2))) AS grade,
+		qasd.name AS answername, 
+		qasd.value AS answervalue,
 		FROM_UNIXTIME(qa.timefinish) AS quizsubmitdate
-	FROM mdl_quiz_attempts qa 
-	JOIN mdl_user u ON qa.userid = u.id 
-	JOIN mdl_quiz q ON qa.quiz = q.id 
-	JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
-	JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
-	JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
-	WHERE q.course = $id 
-	AND q.id = '$eval'
-		AND qa.state = 'finished' 
-		AND qasd.name = '-mark' 
-		AND qa.timefinish IS NOT NULL
-		AND qas.questionid = (
-			SELECT qas2.questionid 
-			FROM mdl_question_attempts qas2
-			WHERE qas2.id = qas.id
-			GROUP BY qas2.questionid, qa.userid
-			HAVING COUNT(DISTINCT qa.id) = 1
-		)
-	GROUP BY qa.id, qas.id
-	ORDER BY u.username, q.name, qas.slot");
+ FROM mdl_quiz_attempts qa 
+ JOIN mdl_user u ON qa.userid = u.id 
+ JOIN mdl_quiz q ON qa.quiz = q.id 
+ JOIN mdl_question_attempts qas ON qa.uniqueid = qas.questionusageid 
+ JOIN mdl_question_attempt_steps qas_steps ON qas.id = qas_steps.questionattemptid
+ JOIN mdl_question_attempt_step_data qasd ON qas_steps.id = qasd.attemptstepid
+ WHERE q.course = $id AND q.id = '$eval' AND qa.state = 'finished' and qasd.name = '-mark' AND qa.timefinish IS NOT NULL
+ GROUP BY qa.id, qas.id, qasd.id
+ ORDER BY u.username, q.name, qas.slot");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{

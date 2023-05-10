@@ -4,7 +4,7 @@
 require_once "conf/headhtml.php";
 session_start();
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-  header("location: ./dashboard");
+  header("location: ./admin");
   exit;
 }
 
