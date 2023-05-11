@@ -147,6 +147,6 @@ if (sidebarToggle) {
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <?php echo '<script src="http://'.$_SERVER['HTTP_HOST'].'/xradius/crossradius-admin/conf/adminsidebar/js/scripts.js">'; ?>
+        <?php echo '<script src="http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/conf/adminsidebar/js/scripts.js">'; ?>
         <script src="js/scripts.js"></script>
 </html>
