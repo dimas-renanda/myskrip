@@ -253,6 +253,23 @@ if (!empty($_POST['id'])) {
     echo       '</tbody>
 </table>';
 
+echo '<div class = "py-3" >
+
+<form class="form-signin" action ="method.php?context=save" method="POST" enctype="multipart/form-data">
+
+           <div class="md-form mb-4">
+              <input type="text" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
+              <input type="text" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
+           </div>
+    <br>
+    <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+</div>
+
+</form>
+
+<button type="submit" name="preview" class="btn btn-primary "><i class="fa fa-save"></i> Save </button>
+
+</div>';
 
     // Write a new .xlsx file
     $writer = new Xlsx($downloadsheet);
@@ -261,23 +278,7 @@ if (!empty($_POST['id'])) {
     $writer->save('create-xlsx-files.xls');
 
     
-    echo '<div class = "py-3" >
 
-    <form class="form-signin" action ="method.php?context=save" method="POST" enctype="multipart/form-data">
-
-               <div class="md-form mb-4">
-                  <input type="hidden" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
-                  <input type="hidden" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
-               </div>
-        <br>
-        <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-    </div>
-
-</form>
-
-    <button type="submit" name="preview" class="btn btn-primary "><i class="fa fa-save"></i> Save </button>
-
-    </div>';
 
     
     
