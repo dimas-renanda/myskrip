@@ -9,9 +9,18 @@ switch ($request_method) {
 				$id=$_GET["id"];
 				$course->getSomeCourse($id);
 			}
+
 			else
 			{
-				$course->getCourse();
+				if(!empty($_GET["course"]))
+				{
+					$crs=$_GET["course"];
+					$course->getOneCourse($crs);
+				}
+				else{
+					$course->getCourse();
+				}
+
 			}
 			break;
 	default:

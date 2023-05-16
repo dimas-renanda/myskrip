@@ -24,6 +24,27 @@ class Course
 		echo json_encode($response);
 	}
 
+	public  function getOneCourse($course = 'null')
+	{
+		global $conn;
+
+		$data=array();
+
+		$stmt = $conn->query("SELECT * from mdl_course where id = $course");
+
+		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$data[]=$row;
+		}
+		$response=array(
+							'status' => 1,
+							'message' =>'Get List One Course Successfully.',
+							'data' => $data
+						);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+	}
+
 	public function getSomeCourse($id = 'null')
 	{
 		global $conn;
@@ -42,7 +63,7 @@ class Course
 		}
 			$response=array(
 								'status' => 1,
-								'message' =>'Get List Course Successfully.',
+								'message' =>'Get List Course by user Successfully.',
 								'data' => $data
 							);
 			header('Content-Type: application/json');

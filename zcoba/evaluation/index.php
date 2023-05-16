@@ -12,7 +12,6 @@ require '../file/vendor/autoload.php';
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 <title>Evaluation </title>
@@ -258,16 +257,17 @@ echo '<div class = "py-3" >
 <form class="form-signin" action ="method.php?context=save" method="POST" enctype="multipart/form-data">
 
            <div class="md-form mb-4">
-              <input type="text" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
-              <input type="text" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
+              <input type="hidden" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
+              <input type="hidden" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
            </div>
     <br>
     <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+    <button type="submit" name="excel" class="btn btn-success "><i class="fa fa-save"></i> Download Excel </button>
 </div>
 
 </form>
 
-<button type="submit" name="preview" class="btn btn-primary "><i class="fa fa-save"></i> Save </button>
+
 
 </div>';
 
