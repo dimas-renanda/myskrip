@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <?php 
 require_once "../conf/safety.php";
 require_once "../assets/assets.php";
@@ -5,6 +13,12 @@ require_once "../condb/connect.php";
 
 $crs = $_POST['id'];
 $evl = $_POST['eval'];
+
+echo "";
+
+
+      
+    echo 'Evaluation List';
 
 function checkCourse()
 {
@@ -27,6 +41,36 @@ function checkCourse()
 
 				if($stmt->rowCount() == 1){
 					$username_err = "This username is already taken.";
+                    return true;
+				} else{
+					return false;
+				}
+			} else{
+				return true;
+			}
+}
+
+function checkEval()
+{
+
+    global $conn;
+
+			$sql = "SELECT id FROM evaluation WHERE id = :id";
+		
+
+			$stmt = $conn->prepare($sql);
+		
+
+			$stmt->bindParam(':id', $x, PDO::PARAM_STR);
+		
+
+			$x = trim($_POST['eval']);
+		
+
+			if($stmt->execute()){
+
+				if($stmt->rowCount() == 1){
+					$username_err = "Quiz ini sudah pernah dibuat.";
                     return true;
 				} else{
 					return false;
@@ -86,7 +130,7 @@ function saveCourses()
 							'status' => 1,
 							'message' =>'Something went wrong. Please try again later.'
 						);
-		header('Content-Type: application/json');
+		//header('Content-Type: application/json');
 		echo json_encode($response);
 					}
 				
@@ -133,31 +177,323 @@ function saveCourses()
 
 }
 
-function saveEvaluation($eid,$cid,$en,$ca)
+function saveEvaluation()
 {
-        $ch = curl_init();
+      $ch = curl_init();
     $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
     //echo $url;
     $homepage = file_get_contents($url);
     //var_dump($homepage);
     $jsonArrayResponse = json_decode($homepage, true);
 
-    $chqnumber = curl_init();
-    $urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
-    //echo $urlchq;
-    $homepagechq = file_get_contents($urlchq);
-    //var_dump($homepagechq);
-    $jsonArrayResponsechq = json_decode($homepagechq, true);
-    //var_dump($jsonArrayResponsechq);
+    $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
+      return $e['quizname'] ;
+  }));
+
+ // print_r($result);
+extract($result);
+
+
+    global $conn;
+    echo $quizname;
+    $ts = date("Y-m-d H:i:s");
+    $crs = $_POST['id'];
+    $evl = $_POST['eval'];
+
+    $sql = "INSERT INTO evaluation (id,courses_id,eval_name,created_at) VALUES ('".intval($evl)."','".intval($crs)."','".$quizname."','".$ts."')"; 
+    try{
+      $stmt = $conn->prepare($sql);
+      if($stmt->execute()){
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+        {
+          $data[]=$row;
+        }
+        $response=array(
+                  'status' => 0,
+                  'message' =>'Success',
+                  'data' => ''
+                );
+        //header('Content-Type: application/json');
+        echo json_encode($response);
+      } else{
+        $response=array(
+          'status' => 1,
+          'message' =>'Something went wrong. Please try again later.'
+        );
+//header('Content-Type: application/json');
+echo json_encode($response);
+      }
+    
+  }catch(PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    echo $sql;
+            echo "<script>const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                  confirmButton: 'btn btn-success',
+                  cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true
+              })
+              
+              swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: 'You wont be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                } else if (
+                  /* Read more about handling dismissals below */
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                  )
+                }
+              })</script>";
+    }
     
 }
 
-function saveStudent($sid,$cid,$nrp,$grd)
+function saveStudent()
 {
+
+  $ch = curl_init();
+  $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
+  //echo $url;
+  $homepage = file_get_contents($url);
+  //var_dump($homepage);
+  $jsonArrayResponse = json_decode($homepage, true);
+
+  $chqnumber = curl_init();
+  $urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
+  //echo $urlchq;
+  $homepagechq = file_get_contents($urlchq);
+  //var_dump($homepagechq);
+  $jsonArrayResponsechq = json_decode($homepagechq, true);
+  //var_dump($jsonArrayResponsechq);
+
+  $result = current(array_filter($jsonArrayResponsechq['data'], function ($e) {
+    return $e['total_questions'];
+}));
+
+// print_r($result);
+extract($result);
+
+echo $total_questions;
+
+foreach ($jsonArrayResponse['data'] as $data) {
+
+    $temparr = array();
+    $cobatemplate= array();
+
+    // $temparr['nrp']=$data['username'];
+    // $temparr['name']=$data['firstname'].' '.$data['lastname'];
+    // $temparr['nomor']=$data['answervalue']*10;
+
+    if(isset($temp) ? !($temp == $data['username']) : true) {
+        //$templatedata[]=',';
+
+        //echo $data['firstname'];
+
+        //  echo '<th scope="row">'.$data['id'].'</th>';
+        // echo '<td>'.$data['id'].'</td>';
+        //echo'<tr>';
+       // echo '<th scope="row">'.$no.'</th>';
+       // echo '<td>'.$data['username'].'</td>';
+
+       // echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
+        //echo '<td>'.$data['quizsubmitdate'].'</td>';
+       // echo '<td>'.intval($data['answervalue']*10).'</td>';
+
+        // $sheet->setCellValue('A'.$no, $no-1);
+        //$templatedata[]=$data['username'];
+        //$sheet->setCellValue('B'.$no, $data['username']);
+        //$templatedata[]=$data['firstname'].' '.$data['lastname'];
+        //$sheet->setCellValue('C'.$no, $data['firstname'].' '.$data['lastname']);
+        //$templatedata[]=$data['answervalue']*10;
+        //$sheet->setCellValue($cell.$no, $data['answervalue']*10);
+
+        //$temparr['no']=$no;
+        $temparr['nrp']=$data['username'];
+        $temparr['name']=$data['firstname'].' '.$data['lastname'];
+
+        //$temparr['nomor']=$data['answervalue']*10;
+
+        //$nilaiq= explode(",", $data['answervalue']*10);
+        $nilaiq= explode(",", $data['answervalue']*10);
+
+        //$cobatemplate[] = $data['username'];
+       // $cobatemplate[] = $data['firstname'].' '.$data['lastname'];
+        //$cobatemplate[] = $data['answervalue']*10;
+
+        array_push($cobatemplate, $data['username'], $data['firstname'].' '.$data['lastname'], $data['answervalue']*10);
+
+
+
+
+
+        foreach ($nilaiq as $dnilai) {
+            array_push($temparr, $dnilai);
+            // array_push($temparr, "+");
+        }
+
+        $no++;
+
+
+
+
+
+
+    } elseif(isset($temp) ? ($temp == $data['username']) : true) {
+
+        $cell++;
+
+
+        //echo '<td>'.intval($data['answervalue']*10).'</td>';
+
+        //$cobatemplate[] = explode(",", $data['answervalue']*10);
+
+        array_push($cobatemplate,explode(",", $data['answervalue']*10));
+
+        $nilaiq= explode(",", $data['answervalue']*10);
+
+
+
+
+        foreach ($nilaiq as $dnilai) {
+            array_push($temparr, $dnilai);
+            //array_push($temparr, "+");
+        }
+
+
+
+
+
+    }
+
+    $temp = $data['username'];
+    $templatedata[] = $temparr;
+}
+//var_dump($templatedata);
+$arraycoba = array();
+foreach($templatedata as $x)
+{
+  foreach($x as $y)
+  {
+    $arraycoba[] = $y;
+    
+  }
+}
+//var_dump($arraycoba);
+echo count($arraycoba);
+foreach($arraycoba as $y)
+{
+
+  echo  $y;
+
+ 
+  
+  
+}
+
+echo '<br>';
+// for ($x = 0; $x < count($arraycoba); $x++) {
+
+//   echo $arraycoba[$x],' ';
+//   if ($x)
+
+//   for ($x = 0; $x < $x; $x++)
+
+// }
+
+global $conn;
+echo $quizname;
+$ts = date("Y-m-d H:i:s");
+$crs = $_POST['id'];
+$evl = $_POST['eval'];
+
+$sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,nama,question_count,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:gpn)"; 
+try{
+  $q = $conn->prepare($sql);
+// Initialize an empty string to store the current group of numbers
+$currentGroup = '';
+  foreach ($jsonArrayResponse['data'] as $student){
+
+    if (is_numeric($value)) {
+      // If the value is numeric, append it to the current group
+      $currentGroup .= $value . ' ';
+  } else {
+      // If the value is not numeric, check if there is a current group to print
+      if (!empty($currentGroup)) {
+          echo rtrim($currentGroup) . '<br>'; // Print the current group
+          $currentGroup = ''; // Reset the current group
+      }
+      echo $value . '<br>'; // Print the non-numeric value on a new line
+  }
+  
+      $a = array (':nrp'=>$student['username'],
+                  ':nama'=>$student['firstname'].' '.$student['lastname'],
+                  ':gpn'=>$student['answervalue'],);
+
+      if ($q->execute($a)) {          
+          // Query succeeded.
+          } else {
+              // Query failed.
+              echo $q->errorCode();
+              }
+      // close the database connection
+      $conn = null;
+      echo "Insert Complete!";
+  }
+  echo '<script>
+  Swal.fire({
+      title: "Success!",
+      text: "Redirecting in 3 seconds...",
+      icon: "success",
+      showConfirmButton: true,
+      timer: 3000
+  }).then(function() {
+      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+  });
+</script>';
+  
+  }
+  catch(PDOException $e) {
+      echo $e->getMessage();
+      }
+
+// Initialize an empty string to store the current group of numbers
+$currentGroup = '';
+
+// Iterate over the array
+foreach ($arraycoba as $value) {
+    if (is_numeric($value)) {
+        // If the value is numeric, append it to the current group
+        $currentGroup .= $value . ' ';
+    } else {
+        // If the value is not numeric, check if there is a current group to print
+        if (!empty($currentGroup)) {
+            echo rtrim($currentGroup) . '<br>'; // Print the current group
+            $currentGroup = ''; // Reset the current group
+        }
+        echo $value . '<br>'; // Print the non-numeric value on a new line
+    }
+}
     
 }
 
-function saveGrade($cid,$eid,$nrp,$nama,$qc,$gpn)
+function saveGrade()
 {
     
 }
@@ -170,7 +506,18 @@ if ($content=='save')
 
     if(checkCourse(intval($_POST['id'])))
     {
-        echo 'ada yang sama tidak tersave';
+        echo 'Course sudah tersedia';
+
+        if(!checkEval(intval($_POST['id'])))
+        {
+          saveEvaluation();
+        }
+        else{
+          echo 'eval pernah dibuat silahkan hapus terlebih dahulu';
+
+          saveStudent();
+        }
+
     }
     else{
         saveCourses();
@@ -213,3 +560,5 @@ else{
 }
 
 ?>
+
+</html>
