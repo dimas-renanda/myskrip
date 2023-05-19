@@ -268,6 +268,72 @@ echo json_encode($response);
 function saveStudent()
 {
 
+  global $conn;
+  $sql = "  INSERT INTO student (courses_id,nrp,name,grade)
+  SELECT courses_id,nrp,name, SUM(grade_per_number) 
+  AS total FROM grade 
+  GROUP BY nrp"; 
+  try{
+    $stmt = $conn->prepare($sql);
+    if($stmt->execute()){
+      while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+      {
+        $data[]=$row;
+      }
+      $response=array(
+                'status' => 0,
+                'message' =>'Success',
+                'data' => ''
+              );
+      //header('Content-Type: application/json');
+      echo json_encode($response);
+    } else{
+      $response=array(
+        'status' => 1,
+        'message' =>'Something went wrong. Please try again later.'
+      );
+//header('Content-Type: application/json');
+echo json_encode($response);
+    }
+  
+}catch(PDOException $e) {
+  echo "Error: " . $e->getMessage();
+  echo $sql;
+  echo '<script>
+  Swal.fire({
+      title: "Error !",
+      text: "Redirecting in 3 seconds...",
+      icon: "error",
+      showConfirmButton: true,
+      timer: 3000
+  }).then(function() {
+      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+  });
+</script>';
+  }
+
+
+
+  echo '<script>
+  Swal.fire({
+      title: "Success!",
+      text: "Redirecting in 3 seconds...",
+      icon: "success",
+      showConfirmButton: true,
+      timer: 3000
+  }).then(function() {
+      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+  });
+</script>';
+  
+ 
+    
+}
+
+function saveGrade()
+{
+
+  
   $ch = curl_init();
   $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
   //echo $url;
@@ -408,14 +474,7 @@ foreach($arraycoba as $y)
 }
 
 echo '<br>';
-// for ($x = 0; $x < count($arraycoba); $x++) {
 
-//   echo $arraycoba[$x],' ';
-//   if ($x)
-
-//   for ($x = 0; $x < $x; $x++)
-
-// }
 
 global $conn;
 echo $quizname;
@@ -423,7 +482,7 @@ $ts = date("Y-m-d H:i:s");
 $crs = $_POST['id'];
 $evl = $_POST['eval'];
 
-$sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,nama,question_count,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:gpn)"; 
+$sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,name,question_count,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:gpn)"; 
 try{
   $q = $conn->prepare($sql);
 // Initialize an empty string to store the current group of numbers
@@ -453,7 +512,7 @@ $currentGroup = '';
               echo $q->errorCode();
               }
       // close the database connection
-      $conn = null;
+      //$conn = null;
       echo "Insert Complete!";
   }
   echo '<script>
@@ -493,9 +552,10 @@ foreach ($arraycoba as $value) {
     
 }
 
-function saveGrade()
+function closeConn()
 {
-    
+  global $conn;
+  $conn = null;
 }
 
 $content = @$_GET['context'];
@@ -511,17 +571,34 @@ if ($content=='save')
         if(!checkEval(intval($_POST['id'])))
         {
           saveEvaluation();
+          saveGrade();
+          saveStudent();
         }
         else{
-          echo 'eval pernah dibuat silahkan hapus terlebih dahulu';
+          echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
 
+          saveGrade();
           saveStudent();
         }
 
     }
     else{
         saveCourses();
+        if(!checkEval(intval($_POST['id'])))
+        {
+          saveEvaluation();
+          saveGrade();
+          saveStudent();
+        }
+        else{
+          echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
+
+          saveGrade();
+          saveStudent();
+        }
     }
+
+    closeConn();
 
  
 }

@@ -1,6 +1,5 @@
 <?php 
-
-require_once "../assets/assets.php";
+require_once 'method.php'
 
 ?>
 <!DOCTYPE html>
@@ -15,25 +14,25 @@ require_once "../assets/assets.php";
   
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
-<title>News</title>
+
+
+<title>Grade</title>
 
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 $('#example').DataTable(
+    
     {
         responsive: true
     }
 );
 });
+
 window.addEventListener('DOMContentLoaded', event => {
 
-// Toggle the side navigation
 const sidebarToggle = document.body.querySelector('#sidebarToggle');
 if (sidebarToggle) {
-// Uncomment Below to persist sidebar toggle between refreshes
-// if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-//     document.body.classList.toggle('sb-sidenav-toggled');
-// }
+
 sidebarToggle.addEventListener('click', event => {
     event.preventDefault();
     document.body.classList.toggle('sb-sidenav-toggled');
@@ -42,17 +41,54 @@ sidebarToggle.addEventListener('click', event => {
 }
 
 });
+
+
 </script>
 </head>
 
 <body>
-
 <div class="col-md" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;">
-<h3>Grade</h3>
+<h3>Saved Grade</h3>
 <hr>
 
+<?php 
+$thedata = getGrade();
 
-Hello World
+echo '<table id ="example" class="table table-bordered table-striped text-center">
+<thead>
+<tr>
+<th scope="col">No</th>';
+    echo'
+  <th scope="col">Courses </th>
+  <th scope="col">Nrp</th> 
+  <th scope="col">Name</th>
+  <th scope="col">Grade</th>
+</tr>
+</thead>
+<tbody>';
+
+
+$no=1;
+
+
+foreach ($thedata as $data) {
+
+    echo'<tr>';
+    echo '<th scope="row">'.$no.'</th>';
+    $no++;
+    echo '<td>'.$data['course_name'].'</td>';
+
+    echo '<td>'.$data['nrp'].'</td>';
+    echo '<td>'.$data['name'].'</td>';
+    echo '<td>'.intval($data['grade']).'</td>';
+}
+    echo '</tr>';
+    echo  '</tbody>
+                   </table>';
+
+
+?>
+
 
 <!-- <p style="padding-bottom: 30px;"></p> -->
 

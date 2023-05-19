@@ -1,6 +1,5 @@
 <?php 
-require_once "../conf/safety.php";
-require_once "../assets/assets.php";
+require_once "method.php";
 
 ?>
 <!DOCTYPE html>
@@ -52,7 +51,43 @@ sidebarToggle.addEventListener('click', event => {
 <hr>
 
 
+<?php 
+$thedata = getStudentGrade();
 
+echo '<table id ="example" class="table table-bordered table-striped text-center">
+<thead>
+<tr>
+<th scope="col">No</th>';
+    echo'
+  <th scope="col">Courses </th>
+  <th scope="col">Nrp</th> 
+  <th scope="col">Name</th>
+  <th scope="col">Grade</th>
+</tr>
+</thead>
+<tbody>';
+
+
+$no=1;
+
+
+foreach ($thedata as $data) {
+
+    echo'<tr>';
+    echo '<th scope="row">'.$no.'</th>';
+    $no++;
+    echo '<td>'.$data['course_name'].'</td>';
+
+    echo '<td>'.$data['nrp'].'</td>';
+    echo '<td>'.$data['name'].'</td>';
+    echo '<td>'.intval($data['grade']).'</td>';
+}
+    echo '</tr>';
+    echo  '</tbody>
+                   </table>';
+
+
+?>
 
 <!-- <p style="padding-bottom: 30px;"></p> -->
 
