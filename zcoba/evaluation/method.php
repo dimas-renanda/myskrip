@@ -262,10 +262,11 @@ function saveStudent()
 {
 
   global $conn;
-  $sql = "  REPLACE INTO student (courses_id,nrp,name,grade)
-  SELECT courses_id,nrp,name, SUM(grade_per_number) 
-  AS total FROM grade 
-  GROUP BY nrp"; 
+  $sql = " delete from student;
+  REPLACE INTO student (courses_id,nrp,name,grade)
+   SELECT courses_id,nrp,name, SUM(grade_per_number) 
+   AS total FROM grade 
+   GROUP BY nrp, courses_id"; 
   try{
     $stmt = $conn->prepare($sql);
     if($stmt->execute()){
@@ -319,13 +320,101 @@ echo json_encode($response);
   });
 </script>';
   
- 
-    
+}
+
+
+function checkGrade()
+{
+
+  global $conn;
+
+  $crs = $_POST['id'];
+  $evl = $_POST['eval'];
+
+  $sql = "SELECT courses_id, evaluation_id FROM grade WHERE courses_id = '$crs' AND evaluation_id = '$evl'";
+		//echo$sql;
+  //exit;
+
+			// Prepare statement
+			$stmt = $conn->prepare($sql);
+		
+			// Bind parameters
+
+
+		
+			// Attempt to execute the prepared statement
+			if($stmt->execute()){
+				/* store result */
+				if($stmt->rowCount() >= 1){
+
+          global $conn;
+  $sql = " DELETE from grade where courses_id = '$crs' AND evaluation_id = '$evl' "; 
+  try{
+    $stmt = $conn->prepare($sql);
+    if($stmt->execute()){
+      while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+      {
+        $data[]=$row;
+      }
+      $response=array(
+                'status' => 0,
+                'message' =>'Success',
+                'data' => ''
+              );
+      //header('Content-Type: application/json');
+      echo json_encode($response);
+    } else{
+      $response=array(
+        'status' => 1,
+        'message' =>'Something went wrong. Please try again later.'
+      );
+//header('Content-Type: application/json');
+echo json_encode($response);
+    }
+  
+}catch(PDOException $e) {
+  echo "Error: " . $e->getMessage();
+  echo $sql;
+  echo '<script>
+  Swal.fire({
+      title: "Error !",
+      text: "Redirecting in 3 seconds...",
+      icon: "error",
+      showConfirmButton: true,
+      timer: 3000
+  }).then(function() {
+      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+  });
+</script>';
+  }
+
+
+
+  echo '<script>
+  Swal.fire({
+      title: "Success!",
+      text: "Redirecting in 3 seconds...",
+      icon: "success",
+      showConfirmButton: true,
+      timer: 3000
+  }).then(function() {
+      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+  });
+</script>';
+
+				} else{
+					//$username = trim($_POST["username"]);
+          return false;
+				}
+			} else{
+				echo "Oops! Something went wrong. Please try again later.";
+        return true;
+			}
 }
 
 function saveGrade()
 {
-
+  checkGrade();
   
   $ch = curl_init();
   $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
@@ -475,6 +564,7 @@ $ts = date("Y-m-d H:i:s");
 $crs = $_POST['id'];
 $evl = $_POST['eval'];
 
+
 $sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,name,question_count,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:gpn)"; 
 try{
   $q = $conn->prepare($sql);
@@ -564,7 +654,10 @@ if ($content=='save')
         if(!checkEval(intval($_POST['id'])))
         {
           saveEvaluation();
-          saveGrade();
+
+
+            saveGrade();
+
           saveStudent();
         }
         else{
@@ -631,3 +724,4 @@ else{
 
 ?>
 
+</html>
