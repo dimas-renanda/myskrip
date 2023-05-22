@@ -110,6 +110,13 @@ if (!empty($_POST['id'])) {
     //var_dump($homepage);
     $jsonArrayResponse = json_decode($homepage, true);
 
+    $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
+      return $e['quizname'] ;
+  }));
+  extract($result);
+
+  echo '<p class="">Quiz Name : ',$quizname,'</p>';
+
     $chqnumber = curl_init();
     $urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
     //echo $urlchq;
@@ -230,12 +237,53 @@ if (!empty($_POST['id'])) {
         $templatedata[] = $temparr;
     }
 
-    var_dump($templatedata);
+    //var_dump($templatedata);
     //var_dump($temparr);
+
+    $arraycoba = array();
+    foreach($templatedata as $x)
+    {
+      foreach($x as $y)
+      {
+        $arraycoba[] = $y;
+        
+      }
+    }
+    //var_dump($arraycoba);
+    echo 'Total data : ',count($arraycoba),'<br>';
+    echo 'Total question : ',$total_questions,'<br>';
+    // foreach($arraycoba as $y)
+    // {
+    
+    //   echo  $y,'   ';
+    
+     
+    
+    // }
+    
+    for ($x = 0; $x < count($arraycoba); $x++) 
+    {
+
+
+      if ($x % ($total_questions + 3) == 0 )
+      {
+        echo '<br>'; ///indexalphabetditambahjadirow kebaawah
+      }
+      echo $arraycoba[$x],'   ';
+
+    }
+    
+    echo '<br>';
+
+
+
+
+
+
 
     foreach ($templatedata as $data) {
 
-        echo @$data['nrp'],' ',@$data['name'],' ',@$data['nomor'],' ';
+        //echo @$data['nrp'],' ',@$data['name'],' ',@$data['nomor'],' ';
 
     }
     echo '</tr>';
