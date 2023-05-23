@@ -95,6 +95,8 @@ if (!empty($_POST['id'])) {
     $sheet->setCellValue('C1', 'Nama');
 
     $cell  = 'D';
+    $cname = $_POST['name'];
+
 
     echo 'Course ID: ',$_POST['id'];
     echo '<br>';
@@ -280,7 +282,6 @@ if (!empty($_POST['id'])) {
 
 
 
-
     foreach ($templatedata as $data) {
 
         //echo @$data['nrp'],' ',@$data['name'],' ',@$data['nomor'],' ';
@@ -288,12 +289,61 @@ if (!empty($_POST['id'])) {
     }
     echo '</tr>';
 
-    $hasilnilai = 0;
-    $cellnya = 'A';
+
+
     $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
     $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
     $downloadsheet->getActiveSheet()->setCellValue('C1', 'Nama');
-    $downloadsheet->getActiveSheet()->fromArray($templatedata, null, 'A2');
+
+    $cellnya = 'D';
+
+    for ($x = 1; $x <= $total_questions; $x++) {
+
+
+      $thead = $cellnya.'1';
+      $downloadsheet->getActiveSheet()->setCellValue($thead, 'No '.$x);
+      $cellnya++;
+
+  }
+
+  $tcel = 'A';
+  $tindex = 2;
+
+  for ($x = 0; $x < count($arraycoba); $x++) 
+  {
+
+
+    if ($x % ($total_questions + 3) == 0 && $x != 0 )
+    {
+         
+      $tindex++;
+      $tcel='A';
+    }
+    echo $arraycoba[$x],'   ';
+    $downloadsheet->getActiveSheet()->setCellValue($tcel.$tindex,$arraycoba[$x]);
+    $tcel++;
+    
+  }
+  $totalrow = $tindex;
+  $tindex++;
+  $acel = 'D';
+  for ($x = 1; $x <= $total_questions; $x++) {
+
+
+
+    $thead = $cellnya.'1';
+    $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '=AVERAGE('.$acel.'2'.':'.$acel.$totalrow.')');
+
+    $acel++;
+
+}
+
+  
+
+  $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
+
+
+    //$downloadsheet->getActiveSheet()->fromArray($templatedata, null, 'A2');
 
 
 
@@ -319,18 +369,23 @@ echo '<div class = "py-3" >
 
 </div>';
 
-    // Write a new .xlsx file
+
+    $styleArray = array(
+      'font'  => array(
+           'bold'  => false,
+           'size'  => 12,
+           'name'  => 'Arial'
+       ));      
+    $downloadsheet->getDefaultStyle()->applyFromArray($styleArray);
+
     $writer = new Xlsx($downloadsheet);
 
-    // Save the new .xlsx file
-    $writer->save('create-xlsx-files.xls');
+    $writer->save('mantap.xls');
+    $cname .= ' - ' . $quizname;
+    $cname .= '.xls';
 
-    
+    $writer->save('file/' . $cname );
 
-
-    
-    
-    
 
 }
 
@@ -372,32 +427,6 @@ elseif (empty($_POST['id']))
       })</script>";
     echo 'Evaluation List';
 }
-
-    
-// echo '      <!-- Alert -->
-// <div id="myModalAlert" class="modal fade" role="dialog">
-// <div class="vertical-alignment-helper">
-//    <div class="modal-dialog" role="document">
-//       <div class="modal-content">
-//          <div class="modal-header text-center">
-//             <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Delete News</h4>
-//             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//          </div>
-//          <div class="modal-body mx-3" method="POST">
-//             <form class="form-signin" action ="deletenews.php" method="POST">
-//                <div class="md-form mb-4 text-center">
-//                   <i class="fa fa-exclamation-triangle fa-3x prefix text-warning"> </i> <br><label for="inputrname">  Are you sure want to delete  ?</label>
-//                   <input type="hidden" id="inputnid" name="nid" class="form-control validate"  value="0" >
-//                </div>
-//                <div class="modal-footer d-flex justify-content-center">
-//                   <button id="redit" class="btn btn-default btn-danger btn-block text-uppercase"><i class="fa fa-trash ">  </i> Delete</button>
-//                </div>
-//             </form>
-//               </div>
-//           </div>
-//       </div>
-//   </div>
-// </div>';
 
 ?>
         

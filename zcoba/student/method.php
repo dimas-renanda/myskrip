@@ -10,8 +10,11 @@ global $conn;
 
 		$data=array();
 
-		$stmt = $conn->query("SELECT courses_id,nrp,name,grade, course_name FROM student 
-        JOIN courses where student.courses_id = courses.id");
+		$stmt = $conn->query("SELECT grade.courses_id, grade.nrp, grade.name, courses.course_name , evaluation.eval_name , grade.qnumber ,grade.grade_per_number
+		FROM grade
+		JOIN courses ON grade.courses_id = courses.id
+		JOIN evaluation ON grade.evaluation_id = evaluation.id
+		ORDER by course_name,nrp");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{

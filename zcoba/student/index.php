@@ -59,9 +59,12 @@ echo '<table id ="example" class="table table-bordered table-striped text-center
 <tr>
 <th scope="col">No</th>';
     echo'
-  <th scope="col">Courses </th>
+  
   <th scope="col">Nrp</th> 
   <th scope="col">Name</th>
+  <th scope="col">Courses </th>
+  <th scope="col">Assesment </th>
+  <th scope="col">Question Number </th>
   <th scope="col">Grade</th>
 </tr>
 </thead>
@@ -76,11 +79,13 @@ foreach ($thedata as $data) {
     echo'<tr>';
     echo '<th scope="row">'.$no.'</th>';
     $no++;
-    echo '<td>'.$data['course_name'].'</td>';
 
     echo '<td>'.$data['nrp'].'</td>';
     echo '<td>'.$data['name'].'</td>';
-    echo '<td>'.intval($data['grade']).'</td>';
+    echo '<td>'.$data['course_name'].'</td>';
+    echo '<td>'.$data['eval_name'].'</td>';
+    echo '<td>'.$data['qnumber'].'</td>';
+    echo '<td>'.$data['grade_per_number'].'</td>';
 }
     echo '</tr>';
     echo  '</tbody>

@@ -565,7 +565,7 @@ $crs = $_POST['id'];
 $evl = $_POST['eval'];
 
 
-$sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,name,question_count,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:gpn)"; 
+$sql = "INSERT INTO grade (courses_id,evaluation_id,nrp,name,question_count,qnumber,grade_per_number) VALUES ('".intval($crs)."','".intval($evl)."',:nrp,:nama,'".intval($total_questions)."',:qnum,:gpn)"; 
 try{
   $q = $conn->prepare($sql);
 // Initialize an empty string to store the current group of numbers
@@ -586,7 +586,8 @@ $currentGroup = '';
   
       $a = array (':nrp'=>$student['username'],
                   ':nama'=>$student['firstname'].' '.$student['lastname'],
-                  ':gpn'=>$student['answervalue'],);
+                  ':gpn'=>$student['answervalue'],
+                  ':qnum'=>$student['originalquestionid'],);
 
       if ($q->execute($a)) {          
           // Query succeeded.
