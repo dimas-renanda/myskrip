@@ -142,17 +142,50 @@ if (sidebarToggle) {
     <div class="col-sm-3 mb-5 py-3 px-4">
       
       <div class="card">
-      <a href="google.com" style="text-decoration:none;color: #000000;">
+      <!-- <a href="google.com" style="text-decoration:none;color: #000000;"> -->
         <div class="card-body">
           <h5 class="card-title"><?php echo $cname; ?></h5>
           <p class="card-text"><?php echo $ename; ?></p>
+          <button class="btn btn-danger float-end mb-3" data-bs-toggle="modal" data-bs-target="#myModalDelete<?php echo $cid.'-'.$eid; ?>"><i class="fa fa-trash"></i></button>
         </div>
-        </a>
+        <!-- </a> -->
         <div class="card-footer">
             <small class="text-muted"><?php echo $ceat; ?></small>
           </div>
       </div>
     </div>
+
+
+      
+<?php 
+ echo '     
+  <div id="myModalDelete'.$cid.'-'.$eid.'" class="modal fade" role="dialog">
+  <div class="vertical-alignment-helper">
+     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Delete Student Grade</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body mx-3" method="POST">
+              <form class="form-signin" action ="deleteeval.php" method="POST">
+                 <div class="md-form mb-4 text-center">
+                    <i class="fa fa-exclamation-triangle fa-3x prefix text-warning"> </i> <br><label for="inputrname">  Are you sure want to delete '.$cname.'  '.$ename.' ?</label>
+                    <input type="hidden" id="inputnid" name="cid" class="form-control validate"  value='.$cid.' >
+                    <input type="hidden" id="inputnid" name="eid" class="form-control validate"  value='.$eid.' >
+                 </div>
+                 <div class="modal-footer d-flex justify-content-center">
+                    <button id="redit" class="btn btn-default btn-danger btn-block text-uppercase"><i class="fa fa-trash ">  </i> Delete</button>
+                 </div>
+              </form>
+                </div>
+            </div>
+       </div>
+   </div>
+  </div>';
+?>
+
+
     <?php } ?>
     
     </div>

@@ -10,7 +10,7 @@ global $conn;
 
 		$data=array();
 
-		$stmt = $conn->query("SELECT grade.courses_id, grade.nrp, grade.name, courses.course_name , evaluation.eval_name , grade.qnumber ,grade.grade_per_number
+		$stmt = $conn->query("SELECT grade.courses_id, grade.nrp, grade.name, courses.course_name , evaluation.id,evaluation.eval_name , grade.qnumber ,grade.grade_per_number
 		FROM grade
 		JOIN courses ON grade.courses_id = courses.id
 		JOIN evaluation ON grade.evaluation_id = evaluation.id

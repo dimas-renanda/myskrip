@@ -48,7 +48,7 @@ sidebarToggle.addEventListener('click', event => {
 
 <body>
 <div class="col-md" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px;">
-<h3>Saved Grade</h3>
+<h3>Student Grade Summary</h3>
 <hr>
 
 <?php 
@@ -80,7 +80,7 @@ foreach ($thedata as $data) {
 
     echo '<td>'.$data['nrp'].'</td>';
     echo '<td>'.$data['name'].'</td>';
-    echo '<td>'.intval($data['grade']).'</td>';
+    echo '<td>'.$data['grade'].'</td>';
 }
     echo '</tr>';
     echo  '</tbody>
