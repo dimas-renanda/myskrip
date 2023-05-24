@@ -64,15 +64,6 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
               </div>
               <br>
 
-              <div class="d-grid mb-2">
-                <a class="btn btn-secondary btn-login text-uppercase fw-bold" href="register.php">
-
-                  <!-- <i class="fab fa-google me-2"></i> -->
-                  Register 
-           
-                </a>
-              </div>
-
               <hr class="my-3">
               <!--<div class="d-grid">
                 <button class="btn btn-facebook btn-login text-uppercase fw-bold" type="submit">
