@@ -152,11 +152,13 @@ if (sidebarToggle) {
           <form class="form-signin" action ="../evaluation/index.php" method="POST">
                <div class="md-form mb-4 text-center">
                   <input type="hidden" name="id" class="form-control validate"  value="<?php echo $cid; ?>">
-                  <input type="hidden" name="name" class="form-control validate"  value="<?php echo $eid; ?>">
+                  <input type="hidden" name="eval" class="form-control validate"  value="<?php echo $eid; ?>">
+                  <input type="hidden" name="name" class="form-control validate"  value="<?php echo $cname; ?>">
                </div>
                <div class="modal-footer d-flex justify-content-center">
 
                   <button id="redit" class="btn btn-default btn-success btn-block text-uppercase"><i class="fa fa-refresh">  </i></button>
+
 
 
                </div>
