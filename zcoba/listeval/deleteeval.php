@@ -18,24 +18,41 @@ $eid = $_POST['eid'];
   if ($stmt) 
   {
 
-    echo '<script>
-    Swal.fire({
-        title: "Success !",
-        text: "Evaluation Deleted ...",
-        icon: "success",
-        showConfirmButton: true,
-        timer: 3000
-    }).then(function() {
-        window.location.href = "http://localhost/myskrip/zcoba/listeval/index.php"; // Replace with your desired URL
-    });
-  </script>';
+    $sqld = "DELETE FROM grade WHERE courses_id = $cid ";
+    $stmtt = $conn->prepare($sqld);
+    $stmtt->execute();
+
+    if ($stmtt)
+    {
+      $sqlds = "DELETE FROM student WHERE courses_id = $cid ";
+    $stmtts = $conn->prepare($sqlds);
+    $stmtts->execute();
+
+if ($stmtts) {
+  echo '<script>
+      Swal.fire({
+          title: "Success !",
+          text: "Evaluation and Grade Deleted ... ",
+          icon: "success",
+          showConfirmButton: true,
+          timer: 10000
+      }).then(function() {
+          window.location.href = "http://localhost/myskrip/zcoba/listeval/index.php"; // Replace with your desired URL
+      });
+    </script>';
+}
+else{
+  echo "<script>Something when wrong...');</script>";
+  header('Location: ' . $_SERVER['HTTP_REFERER']);
+          exit;
+}
+      
+    }
+
+
 
   }
-  else{
-    echo "<script>Something when wrong...');</script>";
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit;
-  }
+
 
 
 }

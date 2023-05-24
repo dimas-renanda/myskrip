@@ -342,7 +342,8 @@ if (!empty($_POST['id'])) {
 
   $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
 
-
+  $cname .= ' - ' . $quizname;
+  $cname .= '.xls';
     //$downloadsheet->getActiveSheet()->fromArray($templatedata, null, 'A2');
 
 
@@ -360,12 +361,14 @@ echo '<div class = "py-3" >
            </div>
     <br>
     <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-    <button type="submit" name="excel" class="btn btn-success "><i class="fa fa-save"></i> Download Excel </button>
+    
 </div>
 
 </form>
 
-
+<a href="file/'.$cname.'">
+<button name="excel" class="btn btn-success "><i class="fa fa-save"></i> Download Excel </button>
+</a>
 
 </div>';
 
@@ -381,8 +384,7 @@ echo '<div class = "py-3" >
     $writer = new Xlsx($downloadsheet);
 
     $writer->save('mantap.xls');
-    $cname .= ' - ' . $quizname;
-    $cname .= '.xls';
+
 
     $writer->save('file/' . $cname );
 

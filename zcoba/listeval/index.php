@@ -113,7 +113,7 @@ if (sidebarToggle) {
     <div class="row" id="load_data">
     <?php 
 
-    
+    $whois = $_SESSION['username'];
     //SELECT course_name,eval_name,evaluation.created_at FROM `evaluation` JOIN courses where evaluation.courses_id = courses.id
     
     
@@ -123,7 +123,7 @@ if (sidebarToggle) {
     $no = intval($limit_start) + intval(1);
     
     $stmt = $conn->query("SELECT courses.course_id,course_name,eval_name,evaluation.id,evaluation.created_at FROM `evaluation` 
-    JOIN courses where evaluation.courses_id = courses.id
+    JOIN courses where evaluation.courses_id = courses.id AND courses.created_by = '$whois'
     ORDER BY course_name ASC LIMIT $limit_start, $limit");
     
     while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -142,13 +142,30 @@ if (sidebarToggle) {
     <div class="col-sm-3 mb-5 py-3 px-4">
       
       <div class="card">
-      <!-- <a href="google.com" style="text-decoration:none;color: #000000;"> -->
+      
         <div class="card-body">
+          <a href="sevaluation.php?cid=<?php echo $cid.'&eid='.$eid; ?>" style="text-decoration:none;color: #000000;">
           <h5 class="card-title"><?php echo $cname; ?></h5>
+          </a>
           <p class="card-text"><?php echo $ename; ?></p>
+
+          <form class="form-signin" action ="../evaluation/index.php" method="POST">
+               <div class="md-form mb-4 text-center">
+                  <input type="hidden" name="id" class="form-control validate"  value="<?php echo $cid; ?>">
+                  <input type="hidden" name="name" class="form-control validate"  value="<?php echo $eid; ?>">
+               </div>
+               <div class="modal-footer d-flex justify-content-center">
+
+                  <button id="redit" class="btn btn-default btn-success btn-block text-uppercase"><i class="fa fa-refresh">  </i></button>
+
+
+               </div>
+               
+            </form>
+
           <button class="btn btn-danger float-end mb-3" data-bs-toggle="modal" data-bs-target="#myModalDelete<?php echo $cid.'-'.$eid; ?>"><i class="fa fa-trash"></i></button>
         </div>
-        <!-- </a> -->
+        
         <div class="card-footer">
             <small class="text-muted"><?php echo $ceat; ?></small>
           </div>
