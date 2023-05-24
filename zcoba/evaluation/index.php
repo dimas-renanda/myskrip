@@ -203,24 +203,10 @@ if (!empty($_POST['id'])) {
     echo 'Total data : ',count($arraycoba),'<br>';
     echo 'Total question : ',$total_questions,'<br>';
 
-    
-    for ($x = 0; $x < count($arraycoba); $x++) 
-    {
 
-
-      if ($x % ($total_questions + 3) == 0 )
-      {
-        echo '<br>'; 
-      }
-      echo $arraycoba[$x],'   ';
-
-    }
-    
     echo '<br>';
 
     echo '</tr>';
-
-
 
     $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
     $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
@@ -250,7 +236,6 @@ if (!empty($_POST['id'])) {
       $tindex++;
       $tcel='A';
     }
-    echo $arraycoba[$x],'   ';
     $downloadsheet->getActiveSheet()->setCellValue($tcel.$tindex,$arraycoba[$x]);
     $tcel++;
     
