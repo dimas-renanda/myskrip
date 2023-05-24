@@ -91,7 +91,7 @@ class Auth
 						$_SESSION["id"] = $result['id'];
 						$_SESSION["username"] = $result['username'];
 						//echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://'.$domainnya.'/xradius/crossradius-admin/dashboard";</script>';
-						echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://localhost/myskrip/zcoba/admin";</script>';
+						echo '<script type="text/javascript">alert("Login Berhasil !");window.location.href="http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/admin";</script>';
 
 					}
 					else if (!password_verify($password, $result['password']))
