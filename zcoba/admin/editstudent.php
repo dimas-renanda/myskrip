@@ -52,7 +52,7 @@ REPLACE INTO student (courses_id,nrp,name,grade)
         showConfirmButton: true,
         timer: 3000
     }).then(function() {
-        window.location.href = "http://localhost/myskrip/zcoba/admin?page=student"; // Replace with your desired URL
+        window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/admin?page=student"; // Replace with your desired URL
     });
   </script>';
   }
