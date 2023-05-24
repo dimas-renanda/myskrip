@@ -38,13 +38,10 @@ $('#example').DataTable(
 });
 window.addEventListener('DOMContentLoaded', event => {
 
-// Toggle the side navigation
+
 const sidebarToggle = document.body.querySelector('#sidebarToggle');
 if (sidebarToggle) {
-// Uncomment Below to persist sidebar toggle between refreshes
-// if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-//     document.body.classList.toggle('sb-sidenav-toggled');
-// }
+
 sidebarToggle.addEventListener('click', event => {
     event.preventDefault();
     document.body.classList.toggle('sb-sidenav-toggled');
@@ -62,26 +59,16 @@ sidebarToggle.addEventListener('click', event => {
 <h3>Quiz Evaluation</h3>
 <hr>
 
-<!-- <p style="padding-bottom: 30px;"></p> -->
-
 <?php 
 
-
-// Import the core class of PhpSpreadsheet
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-// Import the Xlsx writer class
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-// Create a new Spreadsheet object
 $spreadsheet = new Spreadsheet();
 $downloadsheet = new Spreadsheet();
-// Retrieve the current active worksheet
+
 $sheet = $spreadsheet->getActiveSheet();
-
-// Set cell A1 with the "#" string value
-
-
 
 if (!empty($_POST['id'])) {
 
@@ -97,7 +84,6 @@ if (!empty($_POST['id'])) {
     $cell  = 'D';
     $cname = $_POST['name'];
 
-
     echo 'Course ID: ',$_POST['id'];
     echo '<br>';
     echo 'Course: ',$_POST['name'];
@@ -106,10 +92,10 @@ if (!empty($_POST['id'])) {
     echo '<br>';
 
     $ch = curl_init();
-    $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
-    //echo $url;
+    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/studentgrade.php?id='.$_POST['id']."&eval=".$_POST['eval'];
+
     $homepage = file_get_contents($url);
-    //var_dump($homepage);
+
     $jsonArrayResponse = json_decode($homepage, true);
 
     $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
@@ -120,19 +106,18 @@ if (!empty($_POST['id'])) {
   echo '<p class="">Quiz Name : ',$quizname,'</p>';
 
     $chqnumber = curl_init();
-    $urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
-    //echo $urlchq;
+    $urlchq  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/quiz/quiz.php?id='.$_POST['eval'];
+
     $homepagechq = file_get_contents($urlchq);
-    //var_dump($homepagechq);
+
     $jsonArrayResponsechq = json_decode($homepagechq, true);
-    //var_dump($jsonArrayResponsechq);
+
     $result = current(array_filter($jsonArrayResponsechq['data'], function ($e) {
         return $e['total_questions'] ;
     }));
 
-    //print_r($result);
     extract($result);
-    //var_dump($qnumber);
+
     echo '<p class="md-5">Number of quiz question : ',$total_questions,'</p>';
 
     echo '<li><b>Course Available</b>  <span class="cross">&#10006</span></li>
@@ -158,22 +143,12 @@ if (!empty($_POST['id'])) {
 
     $no=1;
 
-
     foreach ($jsonArrayResponse['data'] as $data) {
 
         $temparr = array();
 
-        // $temparr['nrp']=$data['username'];
-        // $temparr['name']=$data['firstname'].' '.$data['lastname'];
-        // $temparr['nomor']=$data['answervalue']*10;
-
         if(isset($temp) ? !($temp == $data['username']) : true) {
-            //$templatedata[]=',';
 
-            //echo $data['firstname'];
-
-            //  echo '<th scope="row">'.$data['id'].'</th>';
-            // echo '<td>'.$data['id'].'</td>';
             echo'<tr>';
             echo '<th scope="row">'.$no.'</th>';
             echo '<td>'.$data['username'].'</td>';
@@ -182,23 +157,12 @@ if (!empty($_POST['id'])) {
             echo '<td>'.$data['quizsubmitdate'].'</td>';
             echo '<td>'.intval($data['answervalue']*10).'</td>';
 
-            // $sheet->setCellValue('A'.$no, $no-1);
-            //$templatedata[]=$data['username'];
-            //$sheet->setCellValue('B'.$no, $data['username']);
-            //$templatedata[]=$data['firstname'].' '.$data['lastname'];
-            //$sheet->setCellValue('C'.$no, $data['firstname'].' '.$data['lastname']);
-            //$templatedata[]=$data['answervalue']*10;
-            //$sheet->setCellValue($cell.$no, $data['answervalue']*10);
 
             $temparr['no']=$no;
             $temparr['nrp']=$data['username'];
             $temparr['name']=$data['firstname'].' '.$data['lastname'];
 
-            //$temparr['nomor']=$data['answervalue']*10;
             $nilaiq= explode(",", $data['answervalue']*10);
-
-
-
 
             foreach ($nilaiq as $dnilai) {
                 array_push($temparr, $dnilai);
@@ -206,32 +170,17 @@ if (!empty($_POST['id'])) {
 
             $no++;
 
-
-
-
-
-
         } elseif(isset($temp) ? ($temp == $data['username']) : true) {
 
             $cell++;
 
-
             echo '<td>'.intval($data['answervalue']*10).'</td>';
 
-
-
             $nilaiq= explode(",", $data['answervalue']*10);
-
-
-
 
             foreach ($nilaiq as $dnilai) {
                 array_push($temparr, $dnilai);
             }
-
-
-
-
 
         }
 
@@ -239,8 +188,7 @@ if (!empty($_POST['id'])) {
         $templatedata[] = $temparr;
     }
 
-    //var_dump($templatedata);
-    //var_dump($temparr);
+
 
     $arraycoba = array();
     foreach($templatedata as $x)
@@ -251,17 +199,10 @@ if (!empty($_POST['id'])) {
         
       }
     }
-    //var_dump($arraycoba);
+
     echo 'Total data : ',count($arraycoba),'<br>';
     echo 'Total question : ',$total_questions,'<br>';
-    // foreach($arraycoba as $y)
-    // {
-    
-    //   echo  $y,'   ';
-    
-     
-    
-    // }
+
     
     for ($x = 0; $x < count($arraycoba); $x++) 
     {
@@ -269,7 +210,7 @@ if (!empty($_POST['id'])) {
 
       if ($x % ($total_questions + 3) == 0 )
       {
-        echo '<br>'; ///indexalphabetditambahjadirow kebaawah
+        echo '<br>'; 
       }
       echo $arraycoba[$x],'   ';
 
@@ -277,16 +218,6 @@ if (!empty($_POST['id'])) {
     
     echo '<br>';
 
-
-
-
-
-
-    foreach ($templatedata as $data) {
-
-        //echo @$data['nrp'],' ',@$data['name'],' ',@$data['nomor'],' ';
-
-    }
     echo '</tr>';
 
 
@@ -344,7 +275,6 @@ if (!empty($_POST['id'])) {
 
   $cname .= ' - ' . $quizname;
   $cname .= '.xls';
-    //$downloadsheet->getActiveSheet()->fromArray($templatedata, null, 'A2');
 
 
 
@@ -382,9 +312,6 @@ echo '<div class = "py-3" >
     $downloadsheet->getDefaultStyle()->applyFromArray($styleArray);
 
     $writer = new Xlsx($downloadsheet);
-
-    $writer->save('mantap.xls');
-
 
     $writer->save('file/' . $cname );
 

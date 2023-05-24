@@ -77,7 +77,7 @@ function saveCourses()
 {
 
     $ch = curl_init();
-    $url  = "http://localhost/myskrip/api/course/course.php?course=".$_POST['id'];
+    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/course/course.php?course='.$_POST['id'];
     //echo $url;
     $homepage = file_get_contents($url);
     //var_dump($homepage);
@@ -173,7 +173,7 @@ function saveCourses()
 function saveEvaluation()
 {
       $ch = curl_init();
-    $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
+    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/studentgrade.php?id='.$_POST['id']."&eval=".$_POST['eval'];
     //echo $url;
     $homepage = file_get_contents($url);
     //var_dump($homepage);
@@ -301,7 +301,7 @@ echo json_encode($response);
       showConfirmButton: true,
       timer: 3000
   }).then(function() {
-      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+      window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/"; // Replace with your desired URL
   });
 </script>';
   }
@@ -316,7 +316,7 @@ echo json_encode($response);
       showConfirmButton: true,
       timer: 3000
   }).then(function() {
-      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+      window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/"; // Replace with your desired URL
   });
 </script>';
   
@@ -383,7 +383,7 @@ echo json_encode($response);
       showConfirmButton: true,
       timer: 3000
   }).then(function() {
-      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+      window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/"; // Replace with your desired URL
   });
 </script>';
   }
@@ -398,7 +398,7 @@ echo json_encode($response);
       showConfirmButton: true,
       timer: 3000
   }).then(function() {
-      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+      window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/"; // Replace with your desired URL
   });
 </script>';
 
@@ -417,14 +417,14 @@ function saveGrade()
   checkGrade();
   
   $ch = curl_init();
-  $url  = "http://localhost/myskrip/api/studentgrade/studentgrade.php?id=".$_POST['id']."&eval=".$_POST['eval'];
+  $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/studentgrade.php?id='.$_POST['id']."&eval=".$_POST['eval'];
   //echo $url;
   $homepage = file_get_contents($url);
   //var_dump($homepage);
   $jsonArrayResponse = json_decode($homepage, true);
 
   $chqnumber = curl_init();
-  $urlchq  = "http://localhost/myskrip/api/quiz/quiz.php?id=".$_POST['eval'];
+  $urlchq  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/quiz/quiz.php?id='.$_POST['eval'];
   //echo $urlchq;
   $homepagechq = file_get_contents($urlchq);
   //var_dump($homepagechq);
@@ -607,7 +607,7 @@ $currentGroup = '';
       showConfirmButton: true,
       timer: 3000
   }).then(function() {
-      window.location.href = "http://localhost/myskrip/zcoba/"; // Replace with your desired URL
+      window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/"; // Replace with your desired URL
   });
 </script>';
   

@@ -37,7 +37,7 @@ if ($stmtts) {
           showConfirmButton: true,
           timer: 10000
       }).then(function() {
-          window.location.href = "http://localhost/myskrip/zcoba/listeval/index.php"; // Replace with your desired URL
+          window.location.href = "http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/listeval/index.php"; // Replace with your desired URL
       });
     </script>';
 }

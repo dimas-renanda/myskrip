@@ -12,5 +12,5 @@ echo '<link href="http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/assets/css/font
 echo '<script src="http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/assets/js/bootstrap.bundle.min.js"></script>';
 ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="icon" href="http://localhost/myskrip/zcoba/assets/img/logo_stab.png">
+<link rel="icon" href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/myskrip/zcoba/assets/img/logo_stab.png">
 </html>

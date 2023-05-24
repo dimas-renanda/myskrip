@@ -65,7 +65,7 @@ $ch = curl_init();
 
     //$emailnya ="damson";
     //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
-    $url  = "http://localhost/myskrip/api/course/course.php?id=".$_SESSION['username'];
+    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/course/course.php?id='.$_SESSION['username'];
 
 
     $homepage = file_get_contents($url);
@@ -136,7 +136,7 @@ echo '
 
     //$emailnya ="damson";
     //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
-    $evalurl  = "http://localhost/myskrip/api/evaluation/evaluation.php?id=".$data['id'];
+    $evalurl  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/evaluation/evaluation.php?id='.$data['id'];
 
 
     $dataeval = file_get_contents($evalurl);
