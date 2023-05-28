@@ -18,13 +18,17 @@ $eid = $_POST['eid'];
   if ($stmt) 
   {
 
-    $sqld = "DELETE FROM grade WHERE courses_id = $cid ";
+    $sqld = "DELETE FROM grade WHERE courses_id = $cid AND evaluation_id = $eid";
     $stmtt = $conn->prepare($sqld);
     $stmtt->execute();
 
     if ($stmtt)
     {
-      $sqlds = "DELETE FROM student WHERE courses_id = $cid ";
+      $sqlds = "delete from student;
+      REPLACE INTO student (courses_id,nrp,name,grade)
+       SELECT courses_id,nrp,name, SUM(grade_per_number) 
+       AS total FROM grade 
+       GROUP BY nrp, courses_id";
     $stmtts = $conn->prepare($sqlds);
     $stmtts->execute();
 
