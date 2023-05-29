@@ -70,6 +70,12 @@ $downloadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
+function extractCode($str) {
+  $parts = explode('-', $str);
+  $code = $parts[0];
+  return $code;
+}
+
 if (!empty($_POST['id'])) {
 
   if(!empty($_GET['save']))
@@ -82,11 +88,13 @@ if (!empty($_POST['id'])) {
     $sheet->setCellValue('C1', 'Nama');
 
     $cell  = 'D';
-    $cname = $_POST['name'];
+    $cname = $_POST['title'];
 
-    echo 'Course ID: ',$_POST['id'];
+    echo 'Course ID: ',$_POST['title'];
     echo '<br>';
-    echo 'Course: ',$_POST['name'];
+    echo 'Course NumID: ',$_POST['id'];
+    echo '<br>';
+    echo 'Course: ',extractCode($_POST['title']);
     echo '<br>';
     echo 'Evaluation (Quiz ID) : ',$_POST['eval'];
     echo '<br>';

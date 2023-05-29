@@ -122,15 +122,15 @@ if (sidebarToggle) {
     (int) $limit_start = intval(($page - 1)) * intval($limit);
     $no = intval($limit_start) + intval(1);
     
-    $stmt = $conn->query("SELECT courses.course_id,course_name,eval_name,evaluation.id,evaluation.created_at FROM `evaluation` 
+    $stmt = $conn->query("SELECT courses.id AS cid,course_name,eval_name,evaluation.id AS eid,evaluation.created_at FROM `evaluation` 
     JOIN courses where evaluation.courses_id = courses.id AND courses.created_by = '$whois'
     ORDER BY course_name ASC LIMIT $limit_start, $limit");
     
     while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
-      $cid = $row["course_id"];
+      $cid = $row["cid"];
       $cname = $row["course_name"];
       $ename = $row["eval_name"];
-      $eid = $row["id"];
+      $eid = $row["eid"];
       $ceat = $row["created_at"];
       if (strlen($cname) > 60) {
         $cname = substr($cname, 0, 60) . "...";

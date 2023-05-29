@@ -18,7 +18,7 @@ function checkCourse()
 
     global $conn;
 
-			$sql = "SELECT id FROM courses WHERE course_id = :id";
+			$sql = "SELECT id FROM courses WHERE id = :id";
 		
 
 			$stmt = $conn->prepare($sql);
@@ -84,7 +84,7 @@ function saveCourses()
     $jsonArrayResponse = json_decode($homepage, true);
 
     $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
-        return $e['shortname'] ;
+        return $e['fullname'] ;
     }));
 
    // print_r($result);
@@ -103,7 +103,7 @@ function saveCourses()
         $ts = date("Y-m-d H:i:s");
         $crs = $_POST['id'];
         echo $crs;
-		$sql = "INSERT INTO courses (id,course_id,course_name,created_by,created_at) VALUES ('".intval($crs)."','".intval($crs)."','".$shortname."','$by','".$ts."')"; 
+		$sql = "INSERT INTO courses (id,course_id,course_name,created_by,created_at) VALUES ('".intval($crs)."','".intval($crs)."','".$fullname."','$by','".$ts."')"; 
 				try{
 					$stmt = $conn->prepare($sql);
 					if($stmt->execute()){
@@ -116,7 +116,7 @@ function saveCourses()
 											'message' =>'Success',
 											'data' => ''
 										);
-						header('Content-Type: application/json');
+						//header('Content-Type: application/json');
 						echo json_encode($response);
 					} else{
 						$response=array(

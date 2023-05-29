@@ -145,11 +145,7 @@ echo '
 foreach ($jsonArrayEvalResponse['data'] as $dataev) {
    echo '<option value="'.$dataev['Quiz ID'].'">'.$dataev['Quiz Name'].'</option>';
 }
-// echo'               
-               
-//                <option value="1">One</option>
-//                <option value="2">Two</option>
-//                <option value="3">Three</option>';
+
  echo'              
              </select>
             </div>';
@@ -199,7 +195,6 @@ echo '      <!-- Delete News -->
 </div>
 
 
-                    <!-- Add Router -->
 <div id="myModalAddNews" class="modal fade" role="dialog">
 <div class="vertical-alignment-helper">
    <div class="modal-dialog" role="document">

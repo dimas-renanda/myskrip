@@ -92,12 +92,17 @@ $jsonArrayResponse = json_decode($homepage, true);
 $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
     return $e['question_count'] ;
 }));
+extract($result);
 $resultname = current(array_filter($jsonArrayResponse['data'], function ($e) {
     return $e['cname'] ;
 }));
-
-extract($result);
 extract($resultname);
+$resultqname = current(array_filter($jsonArrayResponse['data'], function ($e) {
+    return $e['quizname'] ;
+}));
+extract($resultqname);
+
+
 $total_questions = $question_count;
 echo 'Course: ',$cname;
 echo '<br>';
@@ -195,11 +200,6 @@ foreach($templatedata as $x)
 
 echo 'Total data : ',count($arraycoba),'<br>';
 echo 'Total question : ',$total_questions,'<br>';
-
-
-
-
-
 
 $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
 $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
