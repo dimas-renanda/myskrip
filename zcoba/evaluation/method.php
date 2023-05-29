@@ -7,11 +7,7 @@ require_once "../condb/connect.php";
 $crs = $_POST['id'];
 $evl = $_POST['eval'];
 
-echo "";
 
-
-      
-    echo 'Evaluation List';
 
 function checkCourse()
 {
@@ -102,7 +98,7 @@ function saveCourses()
         $by = $_SESSION['username'];
         $ts = date("Y-m-d H:i:s");
         $crs = $_POST['id'];
-        echo $crs;
+       // echo $crs;
 		$sql = "INSERT INTO courses (id,course_id,course_name,created_by,created_at) VALUES ('".intval($crs)."','".intval($crs)."','".$fullname."','$by','".$ts."')"; 
 				try{
 					$stmt = $conn->prepare($sql);
@@ -117,19 +113,19 @@ function saveCourses()
 											'data' => ''
 										);
 						//header('Content-Type: application/json');
-						echo json_encode($response);
+						//echo json_encode($response);
 					} else{
 						$response=array(
 							'status' => 1,
 							'message' =>'Something went wrong. Please try again later.'
 						);
 		//header('Content-Type: application/json');
-		echo json_encode($response);
+	//	echo json_encode($response);
 					}
 				
 			}catch(PDOException $e) {
 				echo "Error: " . $e->getMessage();
-				echo $sql;
+				//echo $sql;
                 echo "<script>const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                       confirmButton: 'btn btn-success',
@@ -188,7 +184,7 @@ extract($result);
 
 
     global $conn;
-    echo $quizname;
+    //echo $quizname;
     $ts = date("Y-m-d H:i:s");
     $crs = $_POST['id'];
     $evl = $_POST['eval'];
@@ -207,19 +203,19 @@ extract($result);
                   'data' => ''
                 );
         //header('Content-Type: application/json');
-        echo json_encode($response);
+        //echo json_encode($response);
       } else{
         $response=array(
           'status' => 1,
           'message' =>'Something went wrong. Please try again later.'
         );
 //header('Content-Type: application/json');
-echo json_encode($response);
+//echo json_encode($response);
       }
     
   }catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
-    echo $sql;
+    //echo $sql;
             echo "<script>const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-success',
@@ -280,19 +276,19 @@ function saveStudent()
                 'data' => ''
               );
       //header('Content-Type: application/json');
-      echo json_encode($response);
+     // echo json_encode($response);
     } else{
       $response=array(
         'status' => 1,
         'message' =>'Something went wrong. Please try again later.'
       );
 //header('Content-Type: application/json');
-echo json_encode($response);
+//echo json_encode($response);
     }
   
 }catch(PDOException $e) {
   echo "Error: " . $e->getMessage();
-  echo $sql;
+  //echo $sql;
   echo '<script>
   Swal.fire({
       title: "Error !",
@@ -369,12 +365,12 @@ function checkGrade()
         'message' =>'Something went wrong. Please try again later.'
       );
 //header('Content-Type: application/json');
-echo json_encode($response);
+//echo json_encode($response);
     }
   
 }catch(PDOException $e) {
   echo "Error: " . $e->getMessage();
-  echo $sql;
+  //echo $sql;
   echo '<script>
   Swal.fire({
       title: "Error !",
@@ -438,7 +434,7 @@ function saveGrade()
 // print_r($result);
 extract($result);
 
-echo $total_questions;
+//echo $total_questions;
 
 foreach ($jsonArrayResponse['data'] as $data) {
 
@@ -496,7 +492,7 @@ foreach ($jsonArrayResponse['data'] as $data) {
             // array_push($temparr, "+");
         }
 
-        $no++;
+        //$no++;
 
 
 
@@ -505,7 +501,7 @@ foreach ($jsonArrayResponse['data'] as $data) {
 
     } elseif(isset($temp) ? ($temp == $data['username']) : true) {
 
-        $cell++;
+       // $cell++;
 
 
         //echo '<td>'.intval($data['answervalue']*10).'</td>';
@@ -544,22 +540,21 @@ foreach($templatedata as $x)
   }
 }
 //var_dump($arraycoba);
-echo count($arraycoba);
-foreach($arraycoba as $y)
-{
+// echo count($arraycoba);
+// foreach($arraycoba as $y)
+// {
 
-  echo  $y;
+//   echo  $y;
 
  
   
   
-}
+// }
 
-echo '<br>';
 
 
 global $conn;
-echo $quizname;
+//echo $quizname;
 $ts = date("Y-m-d H:i:s");
 $crs = $_POST['id'];
 $evl = $_POST['eval'];
@@ -572,21 +567,21 @@ try{
 $currentGroup = '';
   foreach ($jsonArrayResponse['data'] as $student){
 
-    if (is_numeric($value)) {
-      // If the value is numeric, append it to the current group
-      $currentGroup .= $value . ' ';
-  } else {
-      // If the value is not numeric, check if there is a current group to print
-      if (!empty($currentGroup)) {
-          echo rtrim($currentGroup) . '<br>'; // Print the current group
-          $currentGroup = ''; // Reset the current group
-      }
-      echo $value . '<br>'; // Print the non-numeric value on a new line
-  }
+  //   if (is_numeric($value)) {
+  //     // If the value is numeric, append it to the current group
+  //     $currentGroup .= $value . ' ';
+  // } else {
+  //     // If the value is not numeric, check if there is a current group to print
+  //     if (!empty($currentGroup)) {
+  //         //echo rtrim($currentGroup) . '<br>'; // Print the current group
+  //         $currentGroup = ''; // Reset the current group
+  //     }
+  //     //echo $value . '<br>'; // Print the non-numeric value on a new line
+  // }
   
       $a = array (':nrp'=>$student['username'],
                   ':nama'=>$student['firstname'].' '.$student['lastname'],
-                  ':gpn'=>$student['answervalue'],
+                  ':gpn'=>$student['answervalue']*10,
                   ':qnum'=>$student['originalquestionid'],);
 
       if ($q->execute($a)) {          
@@ -597,7 +592,7 @@ $currentGroup = '';
               }
       // close the database connection
       //$conn = null;
-      echo "Insert Complete!";
+      //echo "Insert Complete!";
   }
   echo '<script>
   Swal.fire({
@@ -619,22 +614,22 @@ $currentGroup = '';
 // Initialize an empty string to store the current group of numbers
 $currentGroup = '';
 
-// Iterate over the array
-foreach ($arraycoba as $value) {
-    if (is_numeric($value)) {
-        // If the value is numeric, append it to the current group
-        $currentGroup .= $value . ' ';
-    } else {
-        // If the value is not numeric, check if there is a current group to print
-        if (!empty($currentGroup)) {
-            echo rtrim($currentGroup) . '<br>'; // Print the current group
-            $currentGroup = ''; // Reset the current group
-        }
-        echo $value . '<br>'; // Print the non-numeric value on a new line
-    }
-}
+// // Iterate over the array
+// foreach ($arraycoba as $value) {
+//     if (is_numeric($value)) {
+//         // If the value is numeric, append it to the current group
+//         $currentGroup .= $value . ' ';
+//     } else {
+//         // If the value is not numeric, check if there is a current group to print
+//         if (!empty($currentGroup)) {
+//             echo rtrim($currentGroup) . '<br>'; // Print the current group
+//             $currentGroup = ''; // Reset the current group
+//         }
+//         echo $value . '<br>'; // Print the non-numeric value on a new line
+//     }
+// }
     
-}
+ }
 
 function closeConn()
 {
@@ -645,12 +640,11 @@ function closeConn()
 $content = @$_GET['context'];
 if ($content=='save')
 {
-    echo 'get save be4rhasil';
-    echo $_POST['id'];echo $_POST['eval'];
+    //echo $_POST['id'];echo $_POST['eval'];
 
     if(checkCourse(intval($_POST['id'])))
     {
-        echo 'Course sudah tersedia';
+        //echo 'Course sudah tersedia';
 
         if(!checkEval(intval($_POST['id'])))
         {
@@ -662,7 +656,7 @@ if ($content=='save')
           saveStudent();
         }
         else{
-          echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
+          //echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
 
           saveGrade();
           saveStudent();
@@ -678,7 +672,7 @@ if ($content=='save')
           saveStudent();
         }
         else{
-          echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
+          //echo 'eval pernah dibuat silahkan hapus terlebih dahulu, melanjutkan ke save grade';
 
           saveGrade();
           saveStudent();
@@ -707,20 +701,7 @@ elseif($content=='grade')
 }
 else{
 
-//     echo'
-//     <div class="container-fluid">
-//     <h1 class="mt-4">Welcome to OBE tools !</h1>
-//     <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-//     <p>
-//         Make sure to keep all page content within the
-//         <code>#page-content-wrapper</code>
-//         . The top navbar is optional, and just for demonstration. Just create an element with the
-//         <code>#sidebarToggle</code>
-//         ID which will toggle the menu when clicked.
-//     </p> 
 
-    
-// </div>';
 }
 
 ?>

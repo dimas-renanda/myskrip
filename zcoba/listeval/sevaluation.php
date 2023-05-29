@@ -246,14 +246,14 @@ foreach ($jsonArrayResponse['data'] as $data) {
         echo '<td>'.$data['username'].'</td>';
 
         echo '<td>'.$data['name'].'</td>';
-        if(($data['answervalue']*10) > $arrmaxgrade[$indexnumber] )
+        if(($data['answervalue']) > ($arrmaxgrade[$indexnumber]*10) )
         {
             //echo '%',$data['answervalue']*10,'%';
-            echo '<td style="color: red;">'.($data['answervalue']*10).'</td>';
+            echo '<td style="color: red;">'.($data['answervalue']).'</td>';
 
         }
         else{
-            echo '<td>'.($data['answervalue']*10).'</td>';
+            echo '<td>'.($data['answervalue']).'</td>';
         }
         
 
@@ -261,7 +261,7 @@ foreach ($jsonArrayResponse['data'] as $data) {
         $temparr['no']=$no;
         $temparr['nrp']=$data['username'];
         $temparr['name']=$data['name'];
-        $nilaiq= explode(",", $data['answervalue']*10);
+        $nilaiq= explode(",", $data['answervalue']);
 
 
         // else{
@@ -281,14 +281,14 @@ foreach ($jsonArrayResponse['data'] as $data) {
     } elseif(isset($temp) ? ($temp == $data['username']) : true) {
 
 
-        if(($data['answervalue']*10) > $arrmaxgrade[$indexnumber] )
+        if(($data['answervalue']*10) > ($arrmaxgrade[$indexnumber]*10) )
         {
             //echo '%',$data['answervalue']*10,'%';
-            echo '<td style="color: red;">'.($data['answervalue']*10).'</td>';
+            echo '<td style="color: red;">'.($data['answervalue']).'</td>';
 
         }
         else{
-            echo '<td>'.($data['answervalue']*10).'</td>';
+            echo '<td>'.($data['answervalue']).'</td>';
         }
             //echo '<td>'.($data['answervalue']*10).'</td>';
         
@@ -297,7 +297,7 @@ foreach ($jsonArrayResponse['data'] as $data) {
         
 
 
-        $nilaiq= explode(",", $data['answervalue']*10);
+        $nilaiq= explode(",", $data['answervalue']);
 
 
         foreach ($nilaiq as $dnilai) {

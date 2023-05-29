@@ -80,7 +80,7 @@ foreach ($thedata as $data) {
 
     echo '<td>'.$data['nrp'].'</td>';
     echo '<td>'.$data['name'].'</td>';
-    echo '<td>'.$data['grade'].'</td>';
+    echo '<td>'.($data['grade']).'</td>';
 }
     echo '</tr>';
     echo  '</tbody>

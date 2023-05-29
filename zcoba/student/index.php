@@ -86,7 +86,7 @@ foreach ($thedata as $data) {
     echo '<td>'.$data['course_name'].'</td>';
     echo '<td>'.$data['eval_name'].'</td>';
     echo '<td>'.$data['qnumber'].'</td>';
-    echo '<td>'.$data['grade_per_number'].'</td>';
+    echo '<td>'.(number_format($data['grade_per_number'],1)).'</td>';
     echo '<td> <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModalEdit'.$data['nrp'].'-'.$data['courses_id'].'-'.$data['id'].'-'.$data['qnumber'].'"><i class="fa fa-edit"></i></button>
     </td>';
 
@@ -126,12 +126,17 @@ foreach ($thedata as $data) {
 </div>
 
 <div class="md-form mb-4">
-<i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Course Full Name </label>
+<i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Question Number </label>
+<input type="text" name="questionnumber" class="form-control validate"  value='.$data['qnumber'].' readonly >
+</div>
+
+<div class="md-form mb-4">
+<i class="fa fa-newspaper-o prefix grey-text"> </i> <label for="inputrname">  Grade Value </label>
 
 <input type="hidden" name="cid" class="form-control validate"  value='.$data['courses_id'].' >
 <input type="hidden" name="eid" class="form-control validate"  value='.$data['id'].' >
 <input type="hidden" name="qnum" class="form-control validate"  value='.$data['qnumber'].' >
-<input type="text"  name="enum" class="form-control validate" value="'.$data['grade_per_number'].'" >
+<input type="text"  name="enum" class="form-control validate" value="'.($data['grade_per_number']).'" >
 </div>
 
        
