@@ -74,9 +74,25 @@ $sheet = $spreadsheet->getActiveSheet();
 
 if (!empty($_POST['id'])) {
 
-  if(!empty($_GET['save']))
+  if(empty($_POST['eval']) || $_POST['eval'] == '-' )
 {
-  echo 'Berhasil Masuk Save !' ;
+  $message = "Please select one option !"; 
+$redirectUrl = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/admin/?page=course'; 
+
+echo '<script>';
+echo 'document.addEventListener("DOMContentLoaded", function() {';
+echo 'Swal.fire({';
+echo '  title: "Warning!",';
+echo '  text: "'. $message .'",';
+echo '  icon: "warning",';
+echo '  timer: 3000,';
+echo '  timerProgressBar: true,';
+echo '  showConfirmButton: false';
+echo '}).then(function() {';
+echo '  window.location.href = "'. $redirectUrl .'";'; 
+echo '});';
+echo '});';
+echo '</script>';
 }
 
     $sheet->setCellValue('A1', '#');
@@ -134,7 +150,20 @@ $urlobe  = 'https://obe.petra.ac.id/serviceout.php?t=get_asesmen_list&kodemk='.$
 
 if (!$homepageobe = @file_get_contents($urlobe)) {
   $error = error_get_last();
-  echo "HTTP request failed. Error was: " . $error['message'];
+  //echo "HTTP request failed. Error was: " . $error['message'];
+  $message = 'Data from obe not found !';
+  echo '<script>';
+  echo 'document.addEventListener("DOMContentLoaded", function() {';
+  echo 'Swal.fire({';
+  echo '  title: "Warning!",';
+  echo '  text: "'. $message .'",';
+  echo '  icon: "warning",';
+  echo '  timer: 3000,';
+  echo '  timerProgressBar: true,';
+  echo '  showConfirmButton: false';
+  echo '});';
+  echo '});';
+  echo '</script>';
 } else {
   $jsonArrayResponseObe = json_decode($homepageobe, true);
   $searchString = $quizname;
