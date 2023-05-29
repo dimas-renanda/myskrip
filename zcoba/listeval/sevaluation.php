@@ -1,6 +1,7 @@
 <?php 
 require_once "../conf/safety.php";
 require_once "../assets/assets.php";
+require_once "../evaluation/methodobe.php";
 require '../file/vendor/autoload.php';
 ?>
 <!DOCTYPE html>
@@ -77,6 +78,7 @@ $sheet->setCellValue('C1', 'Nama');
 
 $cell  = 'D';
 
+
 echo 'Course ID: ',$_GET['cid'];
 echo '<br>';
 echo 'Evaluation (Quiz ID) : ',$_GET['eid'];
@@ -102,17 +104,116 @@ $resultqname = current(array_filter($jsonArrayResponse['data'], function ($e) {
 }));
 extract($resultqname);
 
+$periode = '2022S1';
+$kodeunit = '15';
+$kodemk = extractCode($cname);
+
 
 $total_questions = $question_count;
 echo 'Course: ',$cname;
 echo '<br>';
+echo 'Quiz Name: ',$quizname;
+echo '<br>';
 
 echo '<p class="md-5">Number of quiz question : ',$total_questions,'</p>';
 
-echo '<li><b>Course Available</b>  <span class="cross">&#10006</span></li>
-<li><b>Assesment Available</b>  <span class="cross">&#10006</span></li>
-<li><b>Number of Question</b>  <span class="check">&#10004</span></li>
-<li><b>Grade requirement</b>  <span class="check">&#10004</span></li>','<br>';
+$token = hasher("$periode,$kodeunit,$kodemk");
+$chobe = curl_init();
+
+$urlobe  = 'https://obe.petra.ac.id/serviceout.php?t=get_asesmen_list&kodemk='.$kodemk."&periode=".$kodeunit."&periode=".$periode.'&kodeunit=15&token='.$token;
+
+
+if (!$homepageobe = @file_get_contents($urlobe)) {
+    $error = error_get_last();
+    echo "HTTP request failed. Error was: " . $error['message'];
+  } else {
+    $jsonArrayResponseObe = json_decode($homepageobe, true);
+    $searchString = $quizname;
+  $filteredarray = isObeEval($jsonArrayResponseObe,$searchString);
+  
+  
+  $arrsoal = array();
+  $arrmaxgrade = array();
+  
+  foreach($filteredarray as $data)
+  {
+  
+      if($data['name'] != "")
+      {
+  
+          echo cleanHeader($data['name']) , '<br>';
+          echo 'Number of questions in SIM OBE : ',count($data['soal']),'<br>';
+          
+          foreach ($data['soal'] as $key => $question) 
+          {
+              echo  $question . "<br>";
+              array_push($arrsoal, $question);
+              array_push($arrmaxgrade, extractMaxNumber($question));
+              echo 'Max number for this question : '.extractMaxNumber($question) . "<br>";
+          }
+          echo '<br>';
+  
+      }
+  }
+  //var_dump($arrmaxgrade);
+  echo "Everything went better than expected";
+  echo' <li><b>Assesment Available</b>  <span class="check">&#10004</span></li> ';
+  if (count($data['soal']) > $total_questions )
+          {
+  
+            $message = "There are more questions in SIM OBE !"; // Your warning message
+  
+            echo '<script>';
+            echo 'document.addEventListener("DOMContentLoaded", function() {';
+            echo 'Swal.fire({';
+            echo '  title: "Warning!",';
+            echo '  text: "'. $message .'",';
+            echo '  icon: "warning",';
+            echo '  timer: 3000,';
+            echo '  timerProgressBar: true,';
+            echo '  showConfirmButton: false';
+            echo '});';
+            echo '});';
+            echo '</script>';
+  
+            echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+            
+  
+          }
+          if(count($data['soal']) < $total_questions)
+          {
+            $message = "There are less questions in SIM OBE !"; // Your warning message
+  
+            echo '<script>';
+            echo 'document.addEventListener("DOMContentLoaded", function() {';
+            echo 'Swal.fire({';
+            echo '  title: "Warning!",';
+            echo '  text: "'. $message .'",';
+            echo '  icon: "warning",';
+            echo '  timer: 3000,';
+            echo '  timerProgressBar: true,';
+            echo '  showConfirmButton: false';
+            echo '});';
+            echo '});';
+            echo '</script>';
+  
+           echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+  
+          }
+  
+          if(count($data['soal']) == $total_questions)
+          {
+  
+           echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+  
+          }
+  
+  }
+
+    // echo '<li><b>Grade Requirement</b>  <span class="cross">&#10006</span></li>','<br>';
+
+
+    // echo '<li><b>Grade Requirement</b>  <span class="check">&#10004</span></li>','<br>';
 
 echo '<table id ="example" class="table table-bordered table-striped text-center">
 <thead>
@@ -131,7 +232,7 @@ echo'
 <tbody>';
 
 $no=1;
-
+$indexnumber = 0;
 
 foreach ($jsonArrayResponse['data'] as $data) {
 
@@ -145,7 +246,16 @@ foreach ($jsonArrayResponse['data'] as $data) {
         echo '<td>'.$data['username'].'</td>';
 
         echo '<td>'.$data['name'].'</td>';
-        echo '<td>'.($data['answervalue']*10).'</td>';
+        if(($data['answervalue']*10) > $arrmaxgrade[$indexnumber] )
+        {
+            //echo '%',$data['answervalue']*10,'%';
+            echo '<td style="color: red;">'.($data['answervalue']*10).'</td>';
+
+        }
+        else{
+            echo '<td>'.($data['answervalue']*10).'</td>';
+        }
+        
 
 
         $temparr['no']=$no;
@@ -154,6 +264,10 @@ foreach ($jsonArrayResponse['data'] as $data) {
         $nilaiq= explode(",", $data['answervalue']*10);
 
 
+        // else{
+        //     echo '<td>'.($data['answervalue']*10).'</td>';
+        // }
+
 
 
         foreach ($nilaiq as $dnilai) {
@@ -161,13 +275,26 @@ foreach ($jsonArrayResponse['data'] as $data) {
         }
 
         $no++;
+        $indexnumber++;
 
 
     } elseif(isset($temp) ? ($temp == $data['username']) : true) {
 
+
+        if(($data['answervalue']*10) > $arrmaxgrade[$indexnumber] )
+        {
+            //echo '%',$data['answervalue']*10,'%';
+            echo '<td style="color: red;">'.($data['answervalue']*10).'</td>';
+
+        }
+        else{
+            echo '<td>'.($data['answervalue']*10).'</td>';
+        }
+            //echo '<td>'.($data['answervalue']*10).'</td>';
+        
         $cell++;
 
-        echo '<td>'.($data['answervalue']*10).'</td>';
+        
 
 
         $nilaiq= explode(",", $data['answervalue']*10);
@@ -198,7 +325,7 @@ foreach($templatedata as $x)
   }
 }
 
-echo 'Total data : ',count($arraycoba),'<br>';
+//echo 'Total data : ',count($arraycoba),'<br>';
 echo 'Total question : ',$total_questions,'<br>';
 
 $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
@@ -211,7 +338,7 @@ for ($x = 1; $x <= $total_questions; $x++) {
 
 
   $thead = $cellnya.'1';
-  $downloadsheet->getActiveSheet()->setCellValue($thead, 'No '.$x);
+  $downloadsheet->getActiveSheet()->setCellValue($thead, @$arrsoal[$x-1]);
   $cellnya++;
 
 }

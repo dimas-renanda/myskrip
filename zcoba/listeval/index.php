@@ -153,7 +153,7 @@ if (sidebarToggle) {
                <div class="md-form mb-4 text-center">
                   <input type="hidden" name="id" class="form-control validate"  value="<?php echo $cid; ?>">
                   <input type="hidden" name="eval" class="form-control validate"  value="<?php echo $eid; ?>">
-                  <input type="hidden" name="name" class="form-control validate"  value="<?php echo $cname; ?>">
+                  <input type="hidden" name="title" class="form-control validate"  value="<?php echo $cname; ?>">
                </div>
                <div class="modal-footer d-flex justify-content-center">
 

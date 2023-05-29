@@ -1,6 +1,7 @@
 <?php 
 require_once "../conf/safety.php";
 require_once "../assets/assets.php";
+require_once "../evaluation/methodobe.php";
 require '../file/vendor/autoload.php';
 ?>
 <!DOCTYPE html>
@@ -70,11 +71,6 @@ $downloadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
-function extractCode($str) {
-  $parts = explode('-', $str);
-  $code = $parts[0];
-  return $code;
-}
 
 if (!empty($_POST['id'])) {
 
@@ -87,32 +83,21 @@ if (!empty($_POST['id'])) {
     $sheet->setCellValue('B1', 'Nrp');
     $sheet->setCellValue('C1', 'Nama');
 
+
     $cell  = 'D';
     $cname = $_POST['title'];
 
-    echo 'Course ID: ',$_POST['title'];
+    $periode = '2022S1';
+    $kodeunit = '15';
+    $kodemk = extractCode($cname);
+
+    echo 'Course ID: ',$cname;
     echo '<br>';
-    echo 'Course NumID: ',$_POST['id'];
-    echo '<br>';
+    // echo 'Course NumID: ',$_POST['id'];
+    // echo '<br>';
     echo 'Course: ',extractCode($_POST['title']);
-    echo '<br>';
-    echo 'Evaluation (Quiz ID) : ',$_POST['eval'];
-    echo '<br>';
-
-    $ch = curl_init();
-    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/studentgrade.php?id='.$_POST['id']."&eval=".$_POST['eval'];
-
-    $homepage = file_get_contents($url);
-
-    $jsonArrayResponse = json_decode($homepage, true);
-
-    $result = current(array_filter($jsonArrayResponse['data'], function ($e) {
-      return $e['quizname'] ;
-  }));
-  extract($result);
-
-  echo '<p class="">Quiz Name : ',$quizname,'</p>';
-
+  //  echo '<br>';
+    // echo 'Evaluation (Quiz ID) : ',$_POST['eval'];
     $chqnumber = curl_init();
     $urlchq  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/quiz/quiz.php?id='.$_POST['eval'];
 
@@ -125,13 +110,115 @@ if (!empty($_POST['id'])) {
     }));
 
     extract($result);
+    echo '<p>Number of quiz question : ',$total_questions,'</p>';
 
-    echo '<p class="md-5">Number of quiz question : ',$total_questions,'</p>';
+    $ch = curl_init();
+    $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/studentgrade.php?id='.$_POST['id']."&eval=".$_POST['eval'];
 
-    echo '<li><b>Course Available</b>  <span class="cross">&#10006</span></li>
-<li><b>Assesment Available</b>  <span class="cross">&#10006</span></li>
-<li><b>Number of Question</b>  <span class="check">&#10004</span></li>
-<li><b>Grade requirement</b>  <span class="check">&#10004</span></li>','<br>';
+    $homepage = file_get_contents($url);
+
+    $jsonArrayResponse = json_decode($homepage, true);
+
+    $resultqname = current(array_filter($jsonArrayResponse['data'], function ($e) {
+      return $e['quizname'] ;
+  }));
+  extract($resultqname);
+
+  echo '<p >Assesment Detail : ','</p>';
+
+$token = hasher("$periode,$kodeunit,$kodemk");
+$chobe = curl_init();
+
+$urlobe  = 'https://obe.petra.ac.id/serviceout.php?t=get_asesmen_list&kodemk='.$kodemk."&periode=".$kodeunit."&periode=".$periode.'&kodeunit=15&token='.$token;
+
+
+if (!$homepageobe = @file_get_contents($urlobe)) {
+  $error = error_get_last();
+  echo "HTTP request failed. Error was: " . $error['message'];
+} else {
+  $jsonArrayResponseObe = json_decode($homepageobe, true);
+  $searchString = $quizname;
+$filteredarray = isObeEval($jsonArrayResponseObe,$searchString);
+
+
+$arrsoal = array();
+$arrmaxgrade = array();
+
+foreach($filteredarray as $data)
+{
+
+    if($data['name'] != "")
+    {
+
+        echo cleanHeader($data['name']) , '<br>';
+        echo 'Number of questions in SIM OBE : ',count($data['soal']),'<br>';
+        
+        foreach ($data['soal'] as $key => $question) 
+        {
+            echo  $question . "<br>";
+            array_push($arrsoal, $question);
+            array_push($arrmaxgrade, extractMaxNumber($question));
+            echo 'Max number for this question : '.extractMaxNumber($question) . "<br>";
+        }
+        echo '<br>';
+
+    }
+}
+//var_dump($arrsoal);
+echo "Everything went better than expected";
+echo' <li><b>Assesment Available</b>  <span class="check">&#10004</span></li> ';
+if (count($data['soal']) > $total_questions )
+        {
+
+          $message = "There are more questions in SIM OBE !"; // Your warning message
+
+          echo '<script>';
+          echo 'document.addEventListener("DOMContentLoaded", function() {';
+          echo 'Swal.fire({';
+          echo '  title: "Warning!",';
+          echo '  text: "'. $message .'",';
+          echo '  icon: "warning",';
+          echo '  timer: 3000,';
+          echo '  timerProgressBar: true,';
+          echo '  showConfirmButton: false';
+          echo '});';
+          echo '});';
+          echo '</script>';
+
+          echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+          
+
+        }
+        if(count($data['soal']) < $total_questions)
+        {
+          $message = "There are less questions in SIM OBE !"; // Your warning message
+
+          echo '<script>';
+          echo 'document.addEventListener("DOMContentLoaded", function() {';
+          echo 'Swal.fire({';
+          echo '  title: "Warning!",';
+          echo '  text: "'. $message .'",';
+          echo '  icon: "warning",';
+          echo '  timer: 3000,';
+          echo '  timerProgressBar: true,';
+          echo '  showConfirmButton: false';
+          echo '});';
+          echo '});';
+          echo '</script>';
+
+         echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+
+        }
+
+        if(count($data['soal']) == $total_questions)
+        {
+
+         echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+
+        }
+
+
+}
 
     echo '<table id ="example" class="table table-bordered table-striped text-center">
 <thead>
@@ -224,9 +311,9 @@ if (!empty($_POST['id'])) {
 
     for ($x = 1; $x <= $total_questions; $x++) {
 
-
+      
       $thead = $cellnya.'1';
-      $downloadsheet->getActiveSheet()->setCellValue($thead, 'No '.$x);
+      $downloadsheet->getActiveSheet()->setCellValue($thead, @$arrsoal[$x-1]);
       $cellnya++;
 
   }
@@ -282,7 +369,6 @@ echo '<div class = "py-3" >
               <input type="hidden" name="id" class="form-control validate"  value="'.$_POST['id'].'"" >
               <input type="hidden" name="eval" class="form-control validate"  value="'.$_POST['eval'].'" >
            </div>
-    <br>
     <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
     
 </div>
@@ -290,7 +376,7 @@ echo '<div class = "py-3" >
 </form>
 
 <a href="file/'.$cname.'">
-<button name="excel" class="btn btn-success "><i class="fa fa-save"></i> Download Excel </button>
+<button name="excel" class="btn btn-success "><i class="fa fa-download"></i> Download Excel </button>
 </a>
 
 </div>';

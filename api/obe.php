@@ -72,7 +72,7 @@ $filteredarray = isObeEval($jsonArrayResponse,$searchString);
 
 echo '<br>';
 
-foreach($filteredarray as $data)
+foreach($jsonArrayResponse as $data)
 {
 
     if($data['name'] != "")
