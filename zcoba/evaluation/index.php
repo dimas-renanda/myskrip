@@ -242,7 +242,55 @@ if (count($data['soal']) > $total_questions )
         if(count($data['soal']) == $total_questions)
         {
 
-         echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+          echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+          $ind = 0;
+          
+          // foreach ($jsonArrayResponse['data'] as $data) 
+          // {       
+          //     if($data['answervalue'] > $arrmaxgrade[$ind])
+          //     {
+          //         echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+          //         echo' <li><b>Maximum grade exceeds on number '.($ind+1).'</b></li>';
+          //     }
+          //     $ind++;
+              
+          // }
+          $ind = 0;
+        //   foreach ($jsonArrayResponse['data'] as $data) {
+
+        //     $temparr = array();
+        //     if ($ind == $total_questions-1)
+        //     {
+        //       $ind = 0;
+        //     }
+        //     if(isset($temp) ? !($temp == $data['username']) : true) {
+    
+        //       if($data['answervalue'] > $arrmaxgrade[$ind])
+        //       {
+        //           echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+        //           echo' <li><b>Maximum grade exceeds on number '.($data['username']).'</b></li>';
+        //       }
+              
+        //       $ind++;
+                
+    
+        //     } elseif(isset($temp) ? ($temp == $data['username']) : true) {
+        //       if ($ind == $total_questions-1)
+        //       {
+        //         $ind = 0;
+        //       }
+        //         $cell++;
+        //         if($data['answervalue'] > $arrmaxgrade[$ind])
+        //         {
+        //             echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+        //             echo' <li><b>Maximum grade exceeds on number '.($data['username']).'</b></li>';
+        //         }
+    
+        //     }
+    
+        //     $temp = $data['username'];
+        // }
+          
 
         }
 

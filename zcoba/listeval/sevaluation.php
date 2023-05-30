@@ -156,7 +156,7 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
       }
   }
   //var_dump($arrmaxgrade);
-  echo "Everything went better than expected";
+  echo "Details :";
   echo' <li><b>Assesment Available</b>  <span class="check">&#10004</span></li> ';
   if (count($data['soal']) > $total_questions )
           {
@@ -205,6 +205,39 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
           {
   
            echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+
+           $ind = 0;
+        //    foreach ($jsonArrayResponse['data'] as $data) {
+ 
+        //      $temparr = array();
+        //      if ($ind == $total_questions-1)
+        //      {
+        //        $ind = 0;
+        //      }
+        //      if(isset($temp) ? !($temp == $data['username']) : true) {
+     
+        //        if($data['answervalue'] > $arrmaxgrade[$ind])
+        //        {
+        //            echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+        //            echo' <li><b>Maximum grade exceeds on number '.($data['username']).'</b></li>';
+        //        }
+               
+        //        $ind++;
+                 
+     
+        //      } elseif(isset($temp) ? ($temp == $data['username']) : true) {
+
+        //          $cell++;
+        //          if($data['answervalue'] > $arrmaxgrade[$ind])
+        //          {
+        //              echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+        //              echo' <li><b>Maximum grade exceeds on number '.($data['username']).'</b></li>';
+        //          }
+     
+        //      }
+     
+        //      $temp = $data['username'];
+        //  }
   
           }
   
@@ -246,15 +279,10 @@ foreach ($jsonArrayResponse['data'] as $data) {
         echo '<td>'.$data['username'].'</td>';
 
         echo '<td>'.$data['name'].'</td>';
-        if(($data['answervalue']) > ($arrmaxgrade[$indexnumber]*10) )
-        {
-            //echo '%',$data['answervalue']*10,'%';
-            echo '<td style="color: red;">'.($data['answervalue']).'</td>';
 
-        }
-        else{
-            echo '<td>'.($data['answervalue']).'</td>';
-        }
+
+         echo '<td>'.($data['answervalue']).'</td>';
+        
         
 
 
@@ -281,16 +309,10 @@ foreach ($jsonArrayResponse['data'] as $data) {
     } elseif(isset($temp) ? ($temp == $data['username']) : true) {
 
 
-        if(($data['answervalue']*10) > ($arrmaxgrade[$indexnumber]*10) )
-        {
-            //echo '%',$data['answervalue']*10,'%';
-            echo '<td style="color: red;">'.($data['answervalue']).'</td>';
 
-        }
-        else{
+
             echo '<td>'.($data['answervalue']).'</td>';
-        }
-            //echo '<td>'.($data['answervalue']*10).'</td>';
+        
         
         $cell++;
 
