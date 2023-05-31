@@ -154,7 +154,7 @@ class StudentGrade
 			WHERE quiza_inner.userid = quiza.userid
 				AND quiza_inner.quiz = quiza.quiz
 		)
-	ORDER BY u.username, quiza.attempt, qa.slot, qas.sequencenumber, qasd.name");
+	ORDER BY u.username ASC");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
