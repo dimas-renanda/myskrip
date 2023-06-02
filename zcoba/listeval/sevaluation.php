@@ -104,9 +104,16 @@ $resultqname = current(array_filter($jsonArrayResponse['data'], function ($e) {
 }));
 extract($resultqname);
 
-$periode = '2022S1';
 $kodeunit = '15';
+
 $kodemk = extractCode($cname);
+$semester = extractSemesterValue($cname);
+$pr = extractYearValue($cname);
+// var_dump($semester);
+// var_dump($pr);
+//$periode = '2022S1';
+$periode = $pr.'S'.$semester;
+//echo $periode;
 
 
 $total_questions = $question_count;
@@ -204,9 +211,20 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
           if(count($data['soal']) == $total_questions)
           {
   
-           echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
-
-           $ind = 0;
+            echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
+            $ind = 0;
+            //var_dump($jsonArrayResponse);
+            foreach ($jsonArrayResponse['data'] as $data) 
+            {       
+              //echo $arrmaxgrade[$data['qnumber']-1];
+                if($data['answervalue'] > $arrmaxgrade[$data['qnumber']-1])
+                {
+                    echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+                    echo' <li><b>Maximum grade exceeds on number '.$data['qnumber'].' with student NRP : '.$data['username'].'</b></li>';
+                }
+               
+                
+            }
         //    foreach ($jsonArrayResponse['data'] as $data) {
  
         //      $temparr = array();

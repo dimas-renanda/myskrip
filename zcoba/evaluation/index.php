@@ -148,6 +148,7 @@ echo '</script>';
       return $e['quizname'] ;
   }));
   extract($resultqname);
+  //var_dump($jsonArrayResponse);
 
   echo '<p >Assesment Detail : ','</p>';
 
@@ -255,16 +256,17 @@ if (count($data['soal']) > $total_questions )
           echo' <li><b>Number of Question</b>  <span class="check">&#10004</span></li>';
           $ind = 0;
           
-          // foreach ($jsonArrayResponse['data'] as $data) 
-          // {       
-          //     if($data['answervalue'] > $arrmaxgrade[$ind])
-          //     {
-          //         echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
-          //         echo' <li><b>Maximum grade exceeds on number '.($ind+1).'</b></li>';
-          //     }
-          //     $ind++;
+          foreach ($jsonArrayResponse['data'] as $data) 
+          {       
+            //echo $arrmaxgrade[$data['originalquestionid']-1];
+              if($data['answervalue']*10 > $arrmaxgrade[$data['originalquestionid']-1])
+              {
+                  echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+                  echo' <li><b>Maximum grade exceeds on number '.$data['originalquestionid'].' with student NRP : '.$data['username'].'</b></li>';
+              }
+             
               
-          // }
+          }
           $ind = 0;
         //   foreach ($jsonArrayResponse['data'] as $data) {
 
