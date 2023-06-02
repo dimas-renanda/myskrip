@@ -22,13 +22,10 @@
 });
 window.addEventListener('DOMContentLoaded', event => {
 
-// Toggle the side navigation
+
 const sidebarToggle = document.body.querySelector('#sidebarToggle');
 if (sidebarToggle) {
-    // Uncomment Below to persist sidebar toggle between refreshes
-    // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-    //     document.body.classList.toggle('sb-sidenav-toggled');
-    // }
+
     sidebarToggle.addEventListener('click', event => {
         event.preventDefault();
         document.body.classList.toggle('sb-sidenav-toggled');
@@ -47,27 +44,15 @@ if (sidebarToggle) {
 <hr>
 
 
-<!-- <button class="btn btn-info pull-right text-white" data-bs-toggle="modal" data-bs-target="#myModalAddNews" ><i class="fa fa-plus"></i> Add Course</button> -->
-
 
 <p style="padding-bottom: 30px;"></p>
 
 
 <?php 
 
-// $getsql = "SELECT * from news";
-// $stmt = $linkadmincnm->prepare($getsql);
-// $stmt->execute();
-// $hasil = $stmt->get_result();
-// $row = $hasil->fetch_assoc();
 
 $ch = curl_init();
-
-    //$emailnya ="damson";
-    //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
     $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/course/course.php?id='.$_SESSION['username'];
-
-
     $homepage = file_get_contents($url);
     //var_dump($homepage);
     $jsonArrayResponse = json_decode($homepage,true);
@@ -134,8 +119,7 @@ echo '
 
                $ch = curl_init();
 
-    //$emailnya ="damson";
-    //$passnya ="d7cc71ade304eadc9dbb42421cf1a389418e71ec7b33b5b75c13f610caa476eea0564723d6455efb58eb7a16c7003cb99e42d4735a82a6d6b0834998362bddb3";
+   
     $evalurl  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/evaluation/evaluation.php?id='.$data['id'];
 
 
@@ -192,61 +176,6 @@ echo '      <!-- Delete News -->
 </table>';
 ?>
     
-</div>
-
-
-<div id="myModalAddNews" class="modal fade" role="dialog">
-<div class="vertical-alignment-helper">
-   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header text-center">
-            <h4 class="modal-title w-100 font-weight-bold"> <i class="fa fa-newspaper-o"> </i> Add Course</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body mx-3" method="POST">
-         <form action='uploadmedia.php' method="POST" enctype="multipart/form-data">
-						<table align ="text-center">   
-                     
-                  <tr> <td><i class="fa fa-newspaper-o prefix grey-text"> </i> Title</td>
-						<td> : </td>
-						<td><div class="form-group">
-					 <input type="text" name="title" class="form-control " placeholder="Course Name" required>
-						</div></td>
-					</tr>
-
-               <tr> <td><i class="fa fa-file-text prefix grey-text"></i> Description</td>
-						<td> : </td>
-						<td><div class="form-group">
-					 <textarea rows="4" cols="50" name="description" class="form-control " placeholder="Description" required></textarea>
-						</div></td>
-					</tr>
-
-					<tr> <td><i class="fa fa-picture-o prefix grey-text"></i> News Image &nbsp; (Max 2MB)</td>
-						<td> : </td>
-						<td><div class="form-group">
-					 <input type="file" name="filefoto" class="form-control " placeholder="News Image" required>
-						</div></td>
-					</tr>
-
-               <tr> <td><i class="fa fa-link prefix grey-text"></i> News Link</td>
-						<td> : </td>
-						<td><div class="form-group">
-					 <input type="text" name="url" class="form-control " placeholder="URL Link" required>
-						</div></td>
-					</tr>
-
-					<tr> <td></td>
-                        <td></td><td> <button  type="submit" class="btn btn-warning btn-block text-white" value="OK"><i class="fa fa-plus-square"></i> Add</button></td>
-							<td></td>
-                        </tr>
-                        
-                        </table>
-                        
-                    </form>
-              </div>
-          </div>
-      </div>
-  </div>
 </div>
 
 </body>

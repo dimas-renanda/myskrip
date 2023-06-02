@@ -70,7 +70,7 @@ if (sidebarToggle) {
                 <div class="list-group list-group-flush">
                 
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=course"><i class="fa fa-server"></i> Course List</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=file"><i class="fa fa-newspaper-o"></i> OBE File Input</a>
+                  <!--  <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=file"><i class="fa fa-newspaper-o"></i> OBE File Input</a> -->
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=student"><i class="fa fa-comments-o" aria-hidden="true"></i> Student</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../listeval/index.php"><i class="fa fa-user-times" aria-hidden="true"></i> Evaluation</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../admin?page=grade"><i class="fa fa-tachometer" aria-hidden="true"></i> Grade</a>
