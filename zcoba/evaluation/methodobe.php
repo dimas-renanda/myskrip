@@ -47,7 +47,7 @@ $filteredData = array_filter($ar, function($item) use ($search) {
 
 if (empty($filteredData))
 {
-    return NULL;
+    return $filteredData;
 }
 elseif (!empty($filteredData))
 {
