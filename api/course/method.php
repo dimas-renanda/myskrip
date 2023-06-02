@@ -55,7 +55,7 @@ class Course
 		JOIN mdl_role_assignments ra ON ra.contextid = ctx.id
 		JOIN mdl_user u ON u.id = ra.userid
 		JOIN mdl_role r ON r.id = ra.roleid
-		WHERE (r.shortname = 'editingteacher' OR r.shortname = 'coursecreator') AND u.email = '$id'");
+		WHERE (r.shortname = 'editingteacher' OR r.shortname = 'coursecreator') AND u.email = '$id' AND (c.enddate = 0 OR c.enddate >= UNIX_TIMESTAMP(NOW()))");
 
 		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
 		{
