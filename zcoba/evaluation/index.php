@@ -103,9 +103,18 @@ echo '</script>';
     $cell  = 'D';
     $cname = $_POST['title'];
 
-    $periode = '2022S1';
+
+
     $kodeunit = '15';
+
     $kodemk = extractCode($cname);
+    $semester = extractSemesterValue($cname);
+    $pr = extractYearValue($cname);
+    // var_dump($semester);
+    // var_dump($pr);
+    //$periode = '2022S1';
+    $periode = $pr.'S'.$semester;
+    //echo $periode;
 
     echo 'Course ID: ',$cname;
     echo '<br>';

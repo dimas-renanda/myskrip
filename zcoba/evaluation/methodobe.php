@@ -32,6 +32,33 @@ function extractMaxNumber($string) {
     return null;
 }
 
+function extractSemesterValue($string) {
+    // Split the string by the hyphen "-"
+    $parts = explode("-", $string);
+
+    // Extract the desired value
+    $value = $parts[3];
+
+    // Return the extracted value
+    return $value;
+}
+
+function extractYearValue($string) {
+    // Split the string by the hyphen "-"
+    $parts = explode("-", $string);
+
+    // Extract the desired value
+    $value = $parts[4];
+
+    // Return the extracted value
+    return $value;
+}
+
+// $string = 'TF4327-ANALISIS DAN DESAIN SISTEM INFORMASI-B-3-2022';
+// $value = extractSemesterValue($string);
+
+// echo "Value: " . $value . "<br>";
+
 function extractCode($str) {
   $parts = explode('-', $str);
   $code = $parts[0];
