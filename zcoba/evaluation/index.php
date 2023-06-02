@@ -440,7 +440,7 @@ if (count($data['soal']) > $total_questions )
 
   $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
 
-  $cname .= ' - ' . $quizname;
+  $cname .= '-' . $quizname;
   $cname .= '.xls';
 
 
