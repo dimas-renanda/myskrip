@@ -430,8 +430,8 @@ if (count($data['soal']) > $total_questions )
 
 
     $thead = $cellnya.'1';
-    $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '=AVERAGE('.$acel.'2'.':'.$acel.$totalrow.')');
-
+    // $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '=AVERAGE('.$acel.'2'.':'.$acel.$totalrow.')');
+    $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '0');
     $acel++;
 
 }
