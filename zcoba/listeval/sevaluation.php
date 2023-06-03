@@ -183,7 +183,7 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
             echo '});';
             echo '</script>';
   
-            echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+            echo' <li><b>Number of Question</b>  ❌</li>';
             
   
           }
@@ -204,7 +204,7 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
             echo '});';
             echo '</script>';
   
-           echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+           echo' <li><b>Number of Question</b>  ❌</li>';
   
           }
   
@@ -219,7 +219,7 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
               //echo $arrmaxgrade[$data['qnumber']-1];
                 if($data['answervalue'] > $arrmaxgrade[$data['qnumber']-1])
                 {
-                    echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+                    echo' <li><b>Grade Requirement</b>  ❌ </li>';
                     echo' <li><b>Maximum grade exceeds on number '.$data['qnumber'].' with student NRP : '.$data['username'].'</b></li>';
                 }
                
