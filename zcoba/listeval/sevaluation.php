@@ -59,7 +59,6 @@ sidebarToggle.addEventListener('click', event => {
 <h3>Quiz Evaluation</h3>
 <hr>
 
-
 <?php 
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -83,6 +82,10 @@ echo 'Course ID: ',$_GET['cid'];
 echo '<br>';
 echo 'Evaluation (Quiz ID) : ',$_GET['eid'];
 echo '<br>';
+
+$cid=$_GET['cid'];
+$eid=$_GET['eid'];
+
 
 $ch = curl_init();
 $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/zcoba/listeval/method.php?cid='.$_GET['cid']."&eid=".$_GET['eid'];
@@ -163,6 +166,87 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
       }
   }
   //var_dump($arrmaxgrade);
+
+//swapnumber
+  echo '    <div id="myModalSwap" class="modal fade" role="dialog">
+  <div class="vertical-alignment-helper">
+     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold"><i class="fa fa-newspaper-o"> </i> Swap Grade Number </h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+
+          
+
+           <div class="modal-body mx-3" method="POST">
+              <form class="form-signin" action ="swapstudentnumber.php" method="POST">';
+
+        echo '
+               <div class="md-form mb-4">
+               <i class="fa fa-file-text prefix grey-text">  </i> <label for="inputrusername"> Student NRP </label>
+               <select name="nrp" class="form-select" aria-label="Default select example">
+               <option selected>-</option>';
+
+foreach ($jsonArrayResponse['data'] as $datamodal) {
+   echo '<option value="'.$datamodal['username'].'">'.$datamodal['username'].'</option>';
+}
+
+ echo'              
+             </select>
+            </div>';
+
+            echo '
+            <div class="md-form mb-4">
+            <i class="fa fa-file-text prefix grey-text">  </i> <label for="fqn"> From Number </label>
+            <select name="fqnumber" class="form-select" aria-label="Default select example">
+            <option selected>-</option>';
+
+for ($x = 1; $x <= $total_questions; $x++) {
+echo '<option value="'.$x.'">'.$x.'</option>';
+}
+
+echo'              
+          </select>
+         </div>';
+
+
+         //to number
+
+
+
+            echo '
+            <div class="md-form mb-4">
+            <i class="fa fa-file-text prefix grey-text">  </i> <label for="fqn"> To Number </label>
+            <select name="tqnumber" class="form-select" aria-label="Default select example">
+            <option selected>-</option>';
+
+for ($x = 1; $x <= $total_questions; $x++) {
+echo '<option value="'.$x.'">'.$x.'</option>';
+}
+
+echo'              
+          </select>
+         </div>';
+
+        
+echo'
+<div class="md-form mb-4">
+<input type="hidden" name="cid" class="form-control validate"  value='.$cid.' >
+<input type="hidden" name="eid" class="form-control validate"  value='.$eid.' >
+</div>
+
+    
+                 <div class="modal-footer d-flex justify-content-center">
+                    <button id="redit" class="btn btn-default btn-primary btn-block text-uppercase "><i class="fa fa-edit ">  </i> Swap</button>
+                 </div>
+              </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>';
+
   echo "Details :";
   echo' <li><b>Assesment Available</b>  <span class="check">&#10004</span></li> ';
   if (count($data['soal']) > $total_questions )
@@ -266,6 +350,8 @@ if (!$homepageobe = @file_get_contents($urlobe)) {
 
     // echo '<li><b>Grade Requirement</b>  <span class="check">&#10004</span></li>','<br>';
 
+    
+
 echo '<table id ="example" class="table table-bordered table-striped text-center">
 <thead>
 <tr>
@@ -367,6 +453,8 @@ foreach($templatedata as $x)
 
 //echo 'Total data : ',count($arraycoba),'<br>';
 echo 'Total question : ',$total_questions,'<br>';
+
+echo'<div class="mb-5"> <button class="btn btn-primary float-end " data-bs-toggle="modal" data-bs-target="#myModalSwap"><i class="fa fa-arrows-h"></i> Swap Grade</button> </div>';
 
 $downloadsheet->getActiveSheet()->setCellValue('A1', '#');
 $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
