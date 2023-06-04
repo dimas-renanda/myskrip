@@ -9,14 +9,11 @@ function hasher($data)
 
 function cleanHeader($string)
 {
-        // Remove spaces from the string
         $string = str_replace(' ', '', $string);
     
-        // Find the position of the character
         $position = strpos($string, '(');
     
         if ($position !== false) {
-            // Extract the substring before the character
             $string = substr($string, 0, $position);
         }
     
@@ -33,24 +30,35 @@ function extractMaxNumber($string) {
 }
 
 function extractSemesterValue($string) {
-    // Split the string by the hyphen "-"
     $parts = explode("-", $string);
 
-    // Extract the desired value
     $value = $parts[3];
 
-    // Return the extracted value
     return $value;
 }
 
 function extractYearValue($string) {
-    // Split the string by the hyphen "-"
+
     $parts = explode("-", $string);
 
-    // Extract the desired value
     $value = $parts[4];
 
-    // Return the extracted value
+    return $value;
+}
+
+function extractClassValue($string) {
+    $parts = explode("-", $string);
+
+    $value = $parts[2];
+
+    return $value;
+}
+
+function extractClassNameValue($string) {
+    $parts = explode("-", $string);
+
+    $value = $parts[1];
+
     return $value;
 }
 

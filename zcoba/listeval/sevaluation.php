@@ -112,8 +112,10 @@ $kodeunit = '15';
 $kodemk = extractCode($cname);
 $semester = extractSemesterValue($cname);
 $pr = extractYearValue($cname);
+$classname = extractClassNameValue($cname);
+$whatclass = '('.extractClassValue($cname).')';
 // var_dump($semester);
-// var_dump($pr);
+ //var_dump($classname);
 //$periode = '2022S1';
 $periode = $pr.'S'.$semester;
 //echo $periode;
@@ -506,6 +508,7 @@ $acel++;
 
 $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
 
+$filename = $quizname.' '.$classname.' '.$whatclass.' - '.$kodemk.'.xls';
 $cname .= ' - ' . $quizname;
 $cname .= '.xls';
 
@@ -516,7 +519,7 @@ echo       '</tbody>
 echo '<div class = "py-3" >
 
 
-<a href="file/'.$cname.'">
+<a href="file/'.$filename.'">
 <button name="excel" class="btn btn-success "><i class="fa fa-save"></i> Download Excel </button>
 </a>
 
@@ -533,5 +536,5 @@ $downloadsheet->getDefaultStyle()->applyFromArray($styleArray);
 
 $writer = new Xlsx($downloadsheet);
 
-$writer->save('file/' . $cname );
+$writer->save('file/' . $filename );
 ?>
