@@ -227,7 +227,7 @@ if (count($data['soal']) > $total_questions )
           echo '});';
           echo '</script>';
 
-          echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+          echo' <li><b>Number of Question</b>  <span class="cross">❌</span></li>';
           
 
         }
@@ -248,7 +248,7 @@ if (count($data['soal']) > $total_questions )
           echo '});';
           echo '</script>';
 
-         echo' <li><b>Number of Question</b>  <span class="cross">&#10006</span></li>';
+         echo' <li><b>Number of Question</b>  <span class="cross">❌</span></li>';
 
         }
 
@@ -263,7 +263,7 @@ if (count($data['soal']) > $total_questions )
             //echo $arrmaxgrade[$data['originalquestionid']-1];
               if($data['answervalue']*10 > $arrmaxgrade[$data['originalquestionid']-1])
               {
-                  echo' <li><b>Grade Requirement</b>  <span class="cross">&#10006</span> </li>';
+                  echo' <li><b>Grade Requirement</b>  <span class="cross">❌</span> </li>';
                   echo' <li><b>Maximum grade exceeds on number '.$data['originalquestionid'].' with student NRP : '.$data['username'].'</b></li>';
               }
              
@@ -341,7 +341,7 @@ if (count($data['soal']) > $total_questions )
 
             echo '<td>'.$data['firstname'].' '.$data['lastname'].'</td>';
             echo '<td>'.$data['quizsubmitdate'].'</td>';
-            echo '<td>'.intval($data['answervalue']*10).'</td>';
+            echo '<td>'.($data['answervalue']*10).'</td>';
 
 
             $temparr['no']=$no;
@@ -360,7 +360,7 @@ if (count($data['soal']) > $total_questions )
 
             $cell++;
 
-            echo '<td>'.intval($data['answervalue']*10).'</td>';
+            echo '<td>'.($data['answervalue']*10).'</td>';
 
             $nilaiq= explode(",", $data['answervalue']*10);
 

@@ -135,6 +135,7 @@ class StudentGrade
 		CASE
 			WHEN qas.state = 'gradedright' THEN qa.maxmark
 			WHEN qas.state = 'gradedwrong' THEN qa.minfraction
+            WHEN qas.state = 'gradedpartial' THEN qa.maxmark * qas.fraction
 			WHEN qasd.name = '-mark' THEN qasd.value
 			ELSE NULL
 		END AS answervalue
