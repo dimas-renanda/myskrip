@@ -231,10 +231,14 @@ function saveStudent()
 
   global $conn;
   $sql = " delete from student;
-  REPLACE INTO student (courses_id,nrp,name,grade)
-   SELECT courses_id,nrp,name, SUM(grade_per_number) 
-   AS total FROM grade 
-   GROUP BY nrp, courses_id"; 
+  INSERT INTO student (courses_id,nrp,name,grade)
+  SELECT grade.courses_id,nrp,name, SUM(grade_per_number)/(select count(eval_name) from evaluation where courses_id = grade.courses_id) AS total
+  FROM grade 
+  JOIN evaluation 
+  JOIN courses
+  where grade.evaluation_id = evaluation.id 
+  AND evaluation.courses_id = courses.id
+  GROUP BY nrp, grade.courses_id"; 
   try{
     $stmt = $conn->prepare($sql);
     if($stmt->execute()){
