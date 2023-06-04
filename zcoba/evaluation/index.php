@@ -110,8 +110,10 @@ echo '</script>';
     $kodemk = extractCode($cname);
     $semester = extractSemesterValue($cname);
     $pr = extractYearValue($cname);
+    $classname = extractClassNameValue($cname);
+    $whatclass = '('.extractClassValue($cname).')';
     // var_dump($semester);
-    // var_dump($pr);
+     //var_dump($classname);
     //$periode = '2022S1';
     $periode = $pr.'S'.$semester;
     //echo $periode;
@@ -442,6 +444,7 @@ if (count($data['soal']) > $total_questions )
 
   $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
 
+  $filename = $quizname.' '.$classname.' '.$whatclass.' - '.$kodemk.'.xls';
   $cname .='-'.$quizname;
   $cname .= '.xls';
 
@@ -464,7 +467,7 @@ echo '<div class = "py-3" >
 
 </form>
 
-<a href="file/'.$cname.'">
+<a href="file/'.$filename.'">
 <button name="excel" class="btn btn-success "><i class="fa fa-download"></i> Download Excel </button>
 </a>
 
@@ -481,7 +484,7 @@ echo '<div class = "py-3" >
 
     $writer = new Xlsx($downloadsheet);
 
-    $writer->save('file/' . $cname );
+    $writer->save('file/' . $filename );
 
 
 }
