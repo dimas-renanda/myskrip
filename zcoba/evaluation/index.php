@@ -184,7 +184,7 @@ $filteredarray = isObeEval($jsonArrayResponseObe,$searchString);
 
 $arrsoal = array();
 $arrmaxgrade = array();
-var_dump($filteredarray);
+//var_dump($filteredarray);
 //var_dump($searchString);
 foreach($filteredarray as $data)
 {
