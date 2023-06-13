@@ -171,6 +171,35 @@ class StudentGrade
 		 
 	}
 
+	public function getDefaultStudentGrade($id=0)//id course untuk enrolled user
+	{
+		global $conn;
+		$data=array();
+		$stmt = $conn->query("SELECT c.id as cid , u.username,concat(u.firstname,' ',u.lastname) as name,u.firstname,u.lastname AS lastname, r.id as role
+
+		FROM mdl_course c
+		JOIN mdl_context ct ON c.id = ct.instanceid
+		JOIN mdl_role_assignments ra ON ra.contextid = ct.id
+		JOIN mdl_user u ON u.id = ra.userid
+		JOIN mdl_role r ON r.id = ra.roleid
+		
+		where c.id = $id AND r.id = 5
+		order by u.username ASC");
+
+		while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+		{
+			$data[]=$row;
+		}
+		$response=array(
+							'status' => 1,
+							'message' =>'Get List Default Student Grade Successfully.',
+							'data' => $data
+						);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		 
+	}
+
 
 
 }
