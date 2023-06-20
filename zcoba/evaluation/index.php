@@ -398,6 +398,63 @@ if (count($data['soal']) > $total_questions )
     $downloadsheet->getActiveSheet()->setCellValue('B1', 'Nrp');
     $downloadsheet->getActiveSheet()->setCellValue('C1', 'Nama');
 
+
+    //$chdef = curl_init(); coba default score by excel
+    $urldef  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/studentgrade/defaultstudentgrade.php?id='.$_POST['id'];
+
+    $homepagedef = file_get_contents($urldef);
+
+    $jsonArrayResponsedef = json_decode($homepagedef, true);
+
+    var_dump($jsonArrayResponsedef);
+
+    $tceldef = 'A';
+    $tindexdef = 2;
+    $cnt = 1;
+    foreach ($jsonArrayResponsedef['data'] as $data)
+    {
+
+      $downloadsheet->getActiveSheet()->setCellValue($tceldef.$tindexdef, @$cnt);
+      $cnt++;
+
+      $tceldef++;
+      $downloadsheet->getActiveSheet()->setCellValue($tceldef.$tindexdef, @$data['username']);
+      $tceldef++;
+      $downloadsheet->getActiveSheet()->setCellValue($tceldef.$tindexdef, @$data['name']);
+
+      if ($tceldef = 'D')
+      {
+        for ($x = 1; $x <= $total_questions; $x++) {
+
+      
+          $thead = $tceldef.$tindexdef;
+          $downloadsheet->getActiveSheet()->setCellValue($thead, '0');
+          $tceldef++;
+    
+      }
+
+      }
+
+
+
+      $tceldef = 'A';
+      $tindexdef++;
+    }
+
+    $cellnya = 'D';
+
+    for ($x = 1; $x <= $total_questions; $x++) {
+
+      
+      $thead = $cellnya.'1';
+      $downloadsheet->getActiveSheet()->setCellValue($thead, @$arrsoal[$x-1]);
+      $cellnya++;
+
+  }
+
+
+
+
     $cellnya = 'D';
 
     for ($x = 1; $x <= $total_questions; $x++) {
@@ -429,20 +486,32 @@ if (count($data['soal']) > $total_questions )
   $totalrow = $tindex;
   $tindex++;
   $acel = 'D';
-  for ($x = 1; $x <= $total_questions; $x++) {
+//   for ($x = 1; $x <= count($jsonArrayResponsedef['data'])+2; $x++) {
 
 
 
-    $thead = $cellnya.'1';
-    // $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '=AVERAGE('.$acel.'2'.':'.$acel.$totalrow.')');
-    $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '0');
-    $acel++;
+//     $thead = $cellnya.'1';
+//     // $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '=AVERAGE('.$acel.'2'.':'.$acel.$totalrow.')');
+//     $downloadsheet->getActiveSheet()->setCellValue($acel.$tindex, '0');
+//     $acel++;
 
-}
+// }
 
   
 
-  $downloadsheet->getActiveSheet()->setCellValue('A'.$tindex, 'Avg');
+  $downloadsheet->getActiveSheet()->setCellValue('A'.count($jsonArrayResponsedef['data'])+2, 'Avg');
+
+  $sc = 'D';
+  for ($x = 1; $x <= $total_questions; $x++) {
+
+    $thead = $sc.count($jsonArrayResponsedef['data'])+2;
+    $downloadsheet->getActiveSheet()->setCellValue($thead, '0');
+    $sc++;
+
+
+}
+
+
 
   $filename = $quizname.' '.$classname.' '.$whatclass.' - '.$kodemk.'.xls';
   $cname .='-'.$quizname;

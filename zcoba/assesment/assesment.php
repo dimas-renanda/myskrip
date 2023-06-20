@@ -54,7 +54,7 @@ if (sidebarToggle) {
 <?php 
 
 
-$ch = curl_init();
+// $ch = curl_init();
     $url  = 'http://'.$_SERVER['HTTP_HOST'].'/myskrip/api/course/course.php?id='.$_SESSION['username'];
     $homepage = file_get_contents($url);
     //var_dump($homepage);
@@ -120,7 +120,7 @@ echo '
                <select name="eval" class="form-select" aria-label="Default select example">
                <option selected>-</option>';
 
-               $ch = curl_init();
+               // $ch = curl_init();
                $kodeunit = '15';
 
                $kodemk = extractCode($data['fullname']);
