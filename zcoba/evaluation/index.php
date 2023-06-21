@@ -406,7 +406,7 @@ if (count($data['soal']) > $total_questions )
 
     $jsonArrayResponsedef = json_decode($homepagedef, true);
 
-    var_dump($jsonArrayResponsedef);
+   // var_dump($jsonArrayResponsedef);
 
     $tceldef = 'A';
     $tindexdef = 2;
